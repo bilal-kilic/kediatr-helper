@@ -28,8 +28,6 @@ class HandlerService {
 
         val handlerTypes = getHandlerTypes(getCachedHandlerClasses(), ktClass)
 
-        if (handlerTypes.isEmpty()) return null
-
         return handlerTypes.firstNotNullResult { type ->
             ClassInheritorsSearch.search(type, scope, false).firstOrNull {
                 it.superTypes.any { st ->
@@ -62,11 +60,14 @@ class HandlerService {
 
     fun buildCaches(project: Project, treeChangeTracker: TreeChangeTracker) {
         val manager = CachedValuesManager.getManager(project)
-        val dependencies = arrayOf<Any>(PsiModificationTracker.OUT_OF_CODE_BLOCK_MODIFICATION_COUNT, treeChangeTracker)
+        val dependencies = arrayOf<Any>(PsiModificationTracker.MODIFICATION_COUNT, treeChangeTracker)
 
-        cachedHandlerClasses = manager.createCachedValue({
-            CachedValueProvider.Result.create(getHandlerTypes(project), dependencies)
-        }, false)
+        cachedHandlerClasses = manager.createCachedValue(
+            {
+                CachedValueProvider.Result.create(getHandlerTypes(project), dependencies)
+            },
+            false
+        )
     }
 
     private fun getHandlerTypes(project: Project): List<PsiClass> {
@@ -74,8 +75,8 @@ class HandlerService {
         return AllClassesSearch.search(scope, project) { it.contains("Handler") }
             .findAll()
             .filter {
-                it.qualifiedName?.startsWith("com.trendyol.kediatr") ?: false
-                        && it.qualifiedName?.endsWith("Handler") ?: false
+                it.qualifiedName?.startsWith("com.trendyol.kediatr") ?: false &&
+                    it.qualifiedName?.endsWith("Handler") ?: false
             }
             .toList()
     }

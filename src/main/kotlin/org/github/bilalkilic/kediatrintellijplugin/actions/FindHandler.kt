@@ -4,8 +4,8 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.LangDataKeys
 import com.intellij.openapi.components.service
-import org.jetbrains.kotlin.psi.KtClass
 import org.github.bilalkilic.kediatrintellijplugin.services.HandlerService
+import org.jetbrains.kotlin.psi.KtClass
 
 class FindHandler : AnAction() {
 
