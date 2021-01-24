@@ -9,6 +9,6 @@ class ProjectOpenedListener : ProjectManagerListener {
     override fun projectOpened(project: Project) {
         val service = project.service<HandlerService>()
         service.buildCaches(project, HandlerService.TreeChangeTracker())
-        service.getCachedHandlerClasses()
+        // service.getCachedHandlerClasses()
     }
 }

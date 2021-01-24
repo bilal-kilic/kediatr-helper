@@ -1,4 +1,4 @@
-<idea-plugin>
+<idea-plugin require-restart="true">
     <id>org.github.bilalkilic.kediatrintellijplugin</id>
     <name>Kediatr Intellij</name>
     <vendor>bilalkilic</vendor>
