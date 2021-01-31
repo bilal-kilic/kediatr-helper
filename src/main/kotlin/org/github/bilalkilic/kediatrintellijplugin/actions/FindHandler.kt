@@ -11,13 +11,16 @@ import org.jetbrains.kotlin.psi.psiUtil.getSuperNames
 class FindHandler : AnAction() {
 
     override fun actionPerformed(e: AnActionEvent) {
-        val ktClass = (e.dataContext.getData(LangDataKeys.PSI_ELEMENT) ?: return) as KtClass
+        val element = e.dataContext.getData(LangDataKeys.PSI_ELEMENT)
+        if (element !is KtClass) {
+            return
+        }
 
-        val commandTypeNames = ktClass.project.service<HandlerService>().getCachedCommandTypes().mapNotNull { it.name }
+        val commandTypeNames = element.project.service<HandlerService>().getCachedCommandTypes().mapNotNull { it.name }
 
-        val kediatrSuperType = commandTypeNames.firstOrNull { ktClass.getSuperNames().contains(it) }!!
+        val kediatrSuperType = commandTypeNames.firstOrNull { element.getSuperNames().contains(it) }!!
 
-        val handler = ktClass.project.service<HandlerService>().findHandler(ktClass, kediatrSuperType, ktClass.name!!)
+        val handler = element.project.service<HandlerService>().findHandler(element, kediatrSuperType, element.name!!)
         handler?.navigate(false)
     }
 }

@@ -1,4 +1,4 @@
-package org.github.bilalkilic.kediatrintellijplugin
+package org.github.bilalkilic.kediatrintellijplugin.listeners
 
 import com.intellij.codeInsight.daemon.GutterIconNavigationHandler
 import com.intellij.codeInsight.daemon.LineMarkerInfo
@@ -7,9 +7,12 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.markup.GutterIconRenderer
 import com.intellij.psi.PsiElement
 import org.github.bilalkilic.kediatrintellijplugin.services.HandlerService
+import org.github.bilalkilic.kediatrintellijplugin.utils.Icons
+import org.github.bilalkilic.kediatrintellijplugin.utils.getNameFromPackage
 import org.jetbrains.kotlin.idea.debugger.sequence.psi.resolveType
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtClass
+import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.psi.psiUtil.getSuperNames
 import org.jetbrains.kotlin.types.typeUtil.supertypes
 import org.jetbrains.kotlinx.serialization.compiler.backend.common.serialName
@@ -28,15 +31,19 @@ class KediatrHandlerClassMarker : LineMarkerProvider {
                 kediatrSuperType to element.name!!
             }
             is KtCallExpression -> {
-                val commandTypesNames = commandTypes.map { it.qualifiedName }
+                if (element.parent is KtNamedFunction) {
+                    null
+                } else {
+                    val commandTypesNames = commandTypes.map { it.qualifiedName }
 
-                // get first parameter because commandBus only has one argument
-                val handlerParameter = element.valueArguments.first().getArgumentExpression()?.resolveType()
-                val kediatrSuperType = commandTypesNames.firstOrNull { ctn ->
-                    handlerParameter?.supertypes()?.any { ctn == it.serialName() } ?: false
+                    // get first parameter because commandBus only has one argument
+                    val handlerParameter = element.valueArguments.firstOrNull()?.getArgumentExpression()?.resolveType()
+                    val kediatrSuperType = commandTypesNames.firstOrNull { ctn ->
+                        handlerParameter?.supertypes()?.any { ctn == it.serialName() } ?: false
+                    }
+
+                    kediatrSuperType?.getNameFromPackage() to handlerParameter?.serialName()?.getNameFromPackage()
                 }
-
-                kediatrSuperType?.getNameFromPackage() to handlerParameter!!.serialName().getNameFromPackage()
             }
             else -> null
         }
@@ -50,7 +57,7 @@ class KediatrHandlerClassMarker : LineMarkerProvider {
             element.textRange,
             Icons.kediatrGutter,
             { "Go to Handler" },
-            navigationHandler(superTypeMap.first!!, superTypeMap.second),
+            navigationHandler(superTypeMap.first!!, superTypeMap.second!!),
             GutterIconRenderer.Alignment.CENTER
         )
     }

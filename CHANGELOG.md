@@ -9,3 +9,9 @@
 ### Improvements
 - Added gutter markers for commandBus executions 
 - Performance improvements
+## [0.0.3]
+### Bug fixes and documentation
+- Fixed empty lists bug
+- Fixed handler action unsafe casting bug
+- Added todo list
+- Updated documentation

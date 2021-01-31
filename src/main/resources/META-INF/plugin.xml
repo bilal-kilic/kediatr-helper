@@ -9,7 +9,7 @@
     <depends>org.jetbrains.kotlin</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <codeInsight.lineMarkerProvider language="kotlin" implementationClass="org.github.bilalkilic.kediatrintellijplugin.KediatrHandlerClassMarker"/>
+        <codeInsight.lineMarkerProvider language="kotlin" implementationClass="org.github.bilalkilic.kediatrintellijplugin.listeners.KediatrHandlerClassMarker"/>
         <projectService serviceImplementation="org.github.bilalkilic.kediatrintellijplugin.services.HandlerService"/>
     </extensions>
 
