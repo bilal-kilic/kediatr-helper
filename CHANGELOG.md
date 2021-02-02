@@ -16,6 +16,6 @@
 - Added todo list
 - Updated documentation
 ## [1.0.0]
-## Refactor
+### Refactor
 - Refactor code for release
 - Support marking types with any class inherited from Command types
