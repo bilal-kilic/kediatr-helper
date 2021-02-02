@@ -1,8 +1,22 @@
 # Default detekt configuration:
 # https://github.com/detekt/detekt/blob/master/detekt-core/src/main/resources/default-detekt-config.yml
 
+build:
+  maxIssues: 1
+
 formatting:
   Indentation:
     continuationIndentSize: 8
   ParameterListWrapping:
     indentSize: 8
+  MaximumLineLength:
+    active: true
+    maxLineLength: 150
+
+style:
+  MaxLineLength:
+    active: true
+    maxLineLength: 150
+    excludePackageStatements: true
+    excludeImportStatements: true
+    excludeCommentStatements: false

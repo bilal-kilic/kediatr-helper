@@ -1,4 +1,4 @@
-package org.github.bilalkilic.kediatrintellijplugin.services
+package org.bilalkilic.kediatrintellijplugin.services
 
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
@@ -13,8 +13,10 @@ import com.intellij.psi.util.CachedValue
 import com.intellij.psi.util.CachedValueProvider
 import com.intellij.psi.util.CachedValuesManager
 import com.intellij.psi.util.PsiModificationTracker
+import com.jetbrains.rd.util.firstOrNull
+import org.bilalkilic.kediatrintellijplugin.utils.KediatrConstants
+import org.bilalkilic.kediatrintellijplugin.utils.KediatrConstants.KediatrHandlerMap
 import org.jetbrains.kotlin.idea.util.projectStructure.module
-import org.jetbrains.kotlin.utils.addToStdlib.firstNotNullResult
 
 @Service
 class HandlerService {
@@ -24,57 +26,31 @@ class HandlerService {
     fun getCachedHandlerClasses(): Collection<PsiClass> = cachedHandlerClasses.value
     fun getCachedCommandTypes(): Collection<PsiClass> = cachedCommandClasses.value
 
-    private val kediatrPackageName = "com.trendyol.kediatr"
-
-    private val kediatrCommandTypes = arrayOf(
-        "Command",
-        "Query",
-        "Notification"
-    )
-
-    private val kediatrHandlerTypes = arrayOf(
-        "CommandHandler",
-        "AsyncCommandHandler",
-        "QueryHandler",
-        "AsyncQueryHandler",
-        "NotificationHandler",
-        "AsyncNotificationHandler",
-    )
-
-    fun findHandler(element: PsiElement, superType: String, className: String): PsiClass? {
-        val module = element.module ?: return null
+    fun findHandler(element: PsiElement, superQualifiedNames: Collection<String>, className: String): List<PsiClass> {
+        val module = element.module ?: return emptyList()
         val scope = GlobalSearchScope.moduleScope(module)
 
-        val handlerTypes = getHandlerTypes(getCachedHandlerClasses(), superType)
+        val handlerTypes = getHandlerTypes(superQualifiedNames)
 
-        return handlerTypes.firstNotNullResult { type ->
-            ClassInheritorsSearch.search(type, scope, false).firstOrNull {
+        return handlerTypes.map { type ->
+            ClassInheritorsSearch.search(type, scope, false).filter {
                 it.superTypes.any { st ->
                     if (st is PsiClassReferenceType) st.parameters.any { p ->
                         if (p is PsiClassReferenceType) p.name == className else false
                     } else false
                 }
             }
-        }
+        }.flatten()
     }
 
-    private fun getHandlerTypes(handlerClasses: Collection<PsiClass>, superType: String): Array<PsiClass> {
-        return when (superType) {
-            "Command" -> arrayOf(
-                handlerClasses.first { it.name == "CommandHandler" },
-                handlerClasses.first { it.name == "AsyncCommandHandler" },
-            )
-            "Query" -> arrayOf(
-                handlerClasses.first { it.name == "QueryHandler" },
-                handlerClasses.first { it.name == "AsyncQueryHandler" },
-            )
-            "Notification" -> arrayOf(
-                handlerClasses.first { it.name == "NotificationHandler" },
-                handlerClasses.first { it.name == "AsyncNotificationHandler" },
-            )
-            else -> emptyArray()
+    fun hasKediatrCommand(superClassQualifiedNames: Collection<String>) =
+        getHandlerTypes(superClassQualifiedNames).isNotEmpty()
+
+    private fun getHandlerTypes(superClassQualifiedNames: Collection<String>): Collection<PsiClass> =
+        superClassQualifiedNames.flatMap { qualifiedName ->
+            val handler = KediatrHandlerMap.filter { it.key == qualifiedName }.firstOrNull()?.value
+            getCachedHandlerClasses().filter { className -> handler?.contains(className.qualifiedName) ?: false }
         }
-    }
 
     fun buildCaches(project: Project, treeChangeTracker: TreeChangeTracker) {
         val manager = CachedValuesManager.getManager(project)
@@ -96,17 +72,17 @@ class HandlerService {
 
     private fun getHandlerTypes(project: Project): List<PsiClass> {
         val scope = GlobalSearchScope.allScope(project)
-        return AllClassesSearch.search(scope, project) { kediatrHandlerTypes.contains(it) }
+        return AllClassesSearch.search(scope, project) { KediatrConstants.KediatrHandlerNames.contains(it) }
             .findAll()
-            .filter { it.qualifiedName?.startsWith(kediatrPackageName) ?: false }
+            .filter { it.qualifiedName?.startsWith(KediatrConstants.KediatrPackageName) ?: false }
             .toList()
     }
 
     private fun getCommandTypes(project: Project): List<PsiClass> {
         val scope = GlobalSearchScope.allScope(project)
-        return AllClassesSearch.search(scope, project) { kediatrCommandTypes.contains(it) }
+        return AllClassesSearch.search(scope, project) { KediatrConstants.KediatrCommandNames.contains(it) }
             .findAll()
-            .filter { it.qualifiedName?.startsWith(kediatrPackageName) ?: false }
+            .filter { it.qualifiedName?.startsWith(KediatrConstants.KediatrPackageName) ?: false }
             .toList()
     }
 
