@@ -1,6 +1,6 @@
 <idea-plugin require-restart="true">
-    <id>org.bilalkilic.kediatrintellijplugin</id>
-    <name>Kediatr Intellij</name>
+    <id>org.bilalkilic.kediatrhelper</id>
+    <name>Kediatr Helper</name>
     <vendor>bilalkilic</vendor>
 
     <!-- Product and plugin compatibility requirements -->
@@ -9,19 +9,19 @@
     <depends>org.jetbrains.kotlin</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <codeInsight.lineMarkerProvider language="kotlin" implementationClass="org.bilalkilic.kediatrintellijplugin.listeners.KediatrHandlerClassMarker"/>
-        <projectService serviceImplementation="org.bilalkilic.kediatrintellijplugin.services.HandlerService"/>
+        <codeInsight.lineMarkerProvider language="kotlin" implementationClass="org.bilalkilic.kediatrhelper.listeners.KediatrHandlerClassMarker"/>
+        <projectService serviceImplementation="org.bilalkilic.kediatrhelper.services.HandlerService"/>
     </extensions>
 
     <applicationListeners>
-        <listener class="org.bilalkilic.kediatrintellijplugin.listeners.ProjectOpenedListener"
+        <listener class="org.bilalkilic.kediatrhelper.listeners.ProjectOpenedListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </applicationListeners>
 
     <actions>
         <group id="KediatRIntelljPlugin.FindHandler" text="Find Handler" description="Finds the handler of command, query or notification">
             <add-to-group group-id="EditorPopupMenu.GoTo" anchor="last"/>
-            <action class="org.bilalkilic.kediatrintellijplugin.actions.FindHandler" id="FindHandler" text="Find Handler" use-shortcut-of="GotoImplementation"/>
+            <action class="org.bilalkilic.kediatrhelper.actions.FindHandler" id="FindHandler" text="Find Handler" use-shortcut-of="GotoImplementation"/>
         </group>
     </actions>
 </idea-plugin>

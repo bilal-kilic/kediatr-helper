@@ -1,8 +1,8 @@
-Kediatr Intellij Plugin
+Kediatr Helper
 =======================
 
 <!-- Plugin description -->
-**Kediatr Intellij Plugin** is a plugin that provides Intellij support for projects using [KediatR](https://github.com/Trendyol/kediatR)
+**Kediatr Helper** is an Intellij Idea plugin that provides support for projects using [KediatR](https://github.com/Trendyol/kediatR)
 
 ### Features:
  - Gutter icons for command classes and commandBus executions

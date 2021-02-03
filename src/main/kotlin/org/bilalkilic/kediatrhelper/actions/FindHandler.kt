@@ -1,11 +1,11 @@
-package org.bilalkilic.kediatrintellijplugin.actions
+package org.bilalkilic.kediatrhelper.actions
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.LangDataKeys
 import com.intellij.openapi.components.service
-import org.bilalkilic.kediatrintellijplugin.services.HandlerService
-import org.bilalkilic.kediatrintellijplugin.utils.getSerialSuperClassNames
+import org.bilalkilic.kediatrhelper.services.HandlerService
+import org.bilalkilic.kediatrhelper.utils.getSerialSuperClassNames
 import org.jetbrains.kotlin.psi.KtClass
 
 class FindHandler : AnAction() {

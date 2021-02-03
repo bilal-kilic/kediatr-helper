@@ -1,1 +1,1 @@
-rootProject.name = "Kediatr Intellij Plugin"
+rootProject.name = "Kediatr Helper"

@@ -1,4 +1,4 @@
-package org.bilalkilic.kediatrintellijplugin.utils
+package org.bilalkilic.kediatrhelper.utils
 
 object KediatrConstants {
     const val KediatrPackageName = "com.trendyol.kediatr"

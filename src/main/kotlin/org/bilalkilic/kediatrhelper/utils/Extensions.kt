@@ -1,4 +1,4 @@
-package org.bilalkilic.kediatrintellijplugin.utils
+package org.bilalkilic.kediatrhelper.utils
 
 import org.jetbrains.kotlin.idea.caches.resolve.resolveToDescriptorIfAny
 import org.jetbrains.kotlin.psi.KtClassOrObject

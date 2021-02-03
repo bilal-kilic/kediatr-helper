@@ -1,4 +1,4 @@
-package org.bilalkilic.kediatrintellijplugin.services
+package org.bilalkilic.kediatrhelper.services
 
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
@@ -14,8 +14,8 @@ import com.intellij.psi.util.CachedValueProvider
 import com.intellij.psi.util.CachedValuesManager
 import com.intellij.psi.util.PsiModificationTracker
 import com.jetbrains.rd.util.firstOrNull
-import org.bilalkilic.kediatrintellijplugin.utils.KediatrConstants
-import org.bilalkilic.kediatrintellijplugin.utils.KediatrConstants.KediatrHandlerMap
+import org.bilalkilic.kediatrhelper.utils.KediatrConstants
+import org.bilalkilic.kediatrhelper.utils.KediatrConstants.KediatrHandlerMap
 import org.jetbrains.kotlin.idea.util.projectStructure.module
 
 @Service

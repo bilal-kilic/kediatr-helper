@@ -1,4 +1,4 @@
-package org.bilalkilic.kediatrintellijplugin.listeners
+package org.bilalkilic.kediatrhelper.listeners
 
 import com.intellij.codeInsight.daemon.GutterIconNavigationHandler
 import com.intellij.codeInsight.daemon.LineMarkerInfo
@@ -6,10 +6,10 @@ import com.intellij.codeInsight.daemon.LineMarkerProvider
 import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.markup.GutterIconRenderer
 import com.intellij.psi.PsiElement
-import org.bilalkilic.kediatrintellijplugin.services.HandlerService
-import org.bilalkilic.kediatrintellijplugin.utils.Icons
-import org.bilalkilic.kediatrintellijplugin.utils.getNameFromPackage
-import org.bilalkilic.kediatrintellijplugin.utils.getSerialSuperClassNames
+import org.bilalkilic.kediatrhelper.services.HandlerService
+import org.bilalkilic.kediatrhelper.utils.Icons
+import org.bilalkilic.kediatrhelper.utils.getNameFromPackage
+import org.bilalkilic.kediatrhelper.utils.getSerialSuperClassNames
 import org.jetbrains.kotlin.idea.debugger.sequence.psi.resolveType
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtClass

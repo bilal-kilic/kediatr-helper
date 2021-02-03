@@ -1,6 +1,4 @@
-                           <!-- Keep a Changelog guide -> https://keepachangelog.com -->
-
-# IntelliJ Platform Plugin Template Changelog
+# Kediatr Helper
 
 ## [0.0.1]
 ### Initial
@@ -19,3 +17,6 @@
 ### Refactor
 - Refactor code for release
 - Support marking types with any class inherited from Command types
+## [1.0.1]
+### Name Change
+- Changed plugin name to comply with Jet Brains Marketplace rules

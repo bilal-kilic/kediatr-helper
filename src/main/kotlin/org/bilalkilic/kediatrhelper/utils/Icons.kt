@@ -1,4 +1,4 @@
-package org.bilalkilic.kediatrintellijplugin.utils
+package org.bilalkilic.kediatrhelper.utils
 
 import com.intellij.openapi.util.IconLoader
 import javax.swing.Icon
