@@ -1,6 +1,8 @@
 Kediatr Intellij Plugin
 =======================
 
+[![CodeFactor](https://www.codefactor.io/repository/github/bilal-kilic/kediatr-intellij-plugin/badge)](https://www.codefactor.io/repository/github/bilal-kilic/kediatr-intellij-plugin)
+
 <!-- Plugin description -->
 **Kediatr Intellij Plugin** is a plugin that provides Intellij support for projects using [KediatR](https://github.com/Trendyol/kediatR)
 
