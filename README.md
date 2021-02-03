@@ -1,6 +1,10 @@
 Kediatr Helper
 =======================
 
+[![CodeFactor](https://www.codefactor.io/repository/github/bilal-kilic/kediatr-intellij-plugin/badge)](https://www.codefactor.io/repository/github/bilal-kilic/kediatr-intellij-plugin)
+[![JetBrains Plugins](https://img.shields.io/badge/1.0.0-kediatr%20intellij-brightgreen)](https://plugins.jetbrains.com/plugin/16006-kediatr-intellij)
+
+
 <!-- Plugin description -->
 **Kediatr Helper** is an Intellij Idea plugin that provides support for projects using [KediatR](https://github.com/Trendyol/kediatR)
 
