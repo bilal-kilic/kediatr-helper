@@ -33,3 +33,4 @@ Gutter Icon
 - [ ] Change icons to svg files
 - [ ] Add create handler functionality for command types
 - [x] Mark types inherited from Command types
+- [ ] Make project not require restart when enabling
