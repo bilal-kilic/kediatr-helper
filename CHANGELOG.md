@@ -28,3 +28,7 @@
 ## [1.0.2]
 ### Dependency Fix
 - Added java module dependency for compatibility
+
+## [1.0.3]
+### Search Scope Update
+- Change search scope from current module to project
