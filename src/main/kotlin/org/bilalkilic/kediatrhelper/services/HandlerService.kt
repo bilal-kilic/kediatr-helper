@@ -27,9 +27,7 @@ class HandlerService {
     fun getCachedCommandTypes(): Collection<PsiClass> = cachedCommandClasses.value
 
     fun findHandler(element: PsiElement, superQualifiedNames: Collection<String>, className: String): List<PsiClass> {
-        val module = element.module ?: return emptyList()
-        val scope = GlobalSearchScope.moduleScope(module)
-
+        val scope = GlobalSearchScope.projectScope(element.project)
         val handlerTypes = getHandlerTypes(superQualifiedNames)
 
         return handlerTypes.map { type ->
