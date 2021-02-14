@@ -1,4 +1,4 @@
-name: CI
+name: Publish Plugin
 
 # Controls when the action will run. 
 on: [workflow_dispatch]
