@@ -1,0 +1,16 @@
+name: CI
+
+# Controls when the action will run. 
+on: [workflow_dispatch]
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+      - name: Publish Plugin
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Publish Plugin
+        run: ./gradlew publishPlugin
