@@ -18,6 +18,7 @@ import org.jetbrains.kotlin.types.typeUtil.supertypes
 import org.jetbrains.kotlinx.serialization.compiler.backend.common.serialName
 
 class KediatrHandlerClassMarker : LineMarkerProvider {
+    val lineMarkerInfoInfoName = "Go to Handler"
 
     override fun getLineMarkerInfo(element: PsiElement): LineMarkerInfo<*>? {
         val handlerService = element.project.service<HandlerService>()
@@ -42,9 +43,10 @@ class KediatrHandlerClassMarker : LineMarkerProvider {
             element,
             element.textRange,
             Icons.kediatrGutter,
-            { "Go to Handler" },
+            { lineMarkerInfoInfoName },
             navigationHandler(superTypeMap.first, superTypeMap.second!!),
-            GutterIconRenderer.Alignment.CENTER
+            GutterIconRenderer.Alignment.CENTER,
+            { lineMarkerInfoInfoName },
         )
     }
 

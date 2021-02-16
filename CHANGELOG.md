@@ -32,3 +32,7 @@
 ## [1.0.3]
 ### Search Scope Update
 - Change search scope from current module to project
+
+## [1.0.4]
+### 2021.1 EAP Compatibility
+- Added compatibility for 2021.1 EAP
