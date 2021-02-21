@@ -1,3 +1,7 @@
 .gradle
 .idea
 build
+
+# Local outputs
+.DS_Store
+**/.DS_Store
