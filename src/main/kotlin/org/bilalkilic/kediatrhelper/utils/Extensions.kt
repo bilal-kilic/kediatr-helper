@@ -11,3 +11,11 @@ fun KtClassOrObject.getSerialSuperClassNames() = this.resolveToDescriptorIfAny()
     ?.getAllSuperClassifiers()
     ?.toList()
     ?.map { it.classId?.asSingleFqName()?.asString().toString() } ?: emptyList()
+
+fun String.getQueryReturnType(): String {
+    val r = Regex("(?<=Query<)(.*)(?=>)")
+    val matches = r.find(this)
+    return matches?.groupValues?.first() ?: ""
+}
+
+fun String.isQuery() = this.contains("Query")

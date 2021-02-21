@@ -12,6 +12,8 @@
     <extensions defaultExtensionNs="com.intellij">
         <codeInsight.lineMarkerProvider language="kotlin" implementationClass="org.bilalkilic.kediatrhelper.listeners.KediatrHandlerClassMarker"/>
         <projectService serviceImplementation="org.bilalkilic.kediatrhelper.services.HandlerService"/>
+        <internalFileTemplate name="createNewQueryHandler"/>
+        <internalFileTemplate name="createNewCommandHandler"/>
     </extensions>
 
     <applicationListeners>

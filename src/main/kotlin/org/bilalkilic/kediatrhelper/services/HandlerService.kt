@@ -16,7 +16,6 @@ import com.intellij.psi.util.PsiModificationTracker
 import com.jetbrains.rd.util.firstOrNull
 import org.bilalkilic.kediatrhelper.utils.KediatrConstants
 import org.bilalkilic.kediatrhelper.utils.KediatrConstants.KediatrHandlerMap
-import org.jetbrains.kotlin.idea.util.projectStructure.module
 
 @Service
 class HandlerService {
