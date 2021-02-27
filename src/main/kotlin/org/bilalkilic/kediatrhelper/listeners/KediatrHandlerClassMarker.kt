@@ -21,7 +21,6 @@ import org.bilalkilic.kediatrhelper.utils.getSerialSuperClassNames
 import org.jetbrains.kotlin.idea.debugger.sequence.psi.resolveType
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtClass
-import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.types.typeUtil.supertypes
 import org.jetbrains.kotlinx.serialization.compiler.backend.common.serialName
@@ -66,11 +65,10 @@ class KediatrHandlerClassMarker : LineMarkerProvider {
         GutterIconNavigationHandler<PsiElement> { me, elt ->
             val project = elt.project
             val handler = project.service<HandlerService>().findHandler(elt, superClassQualifiedNames, commandTypeName)
-            handler.firstOrNull()?.navigate(false) ?: showPopupWithIcon(elt, me)
+            handler.firstOrNull()?.navigate(false) ?: showPopupWithIcon(elt as KtClass, me)
         }
 
-    private fun showPopup(element: PsiElement, me: MouseEvent) {
-        val mainClass = (element.parent as KtFile).classes.firstOrNull() ?: return
+    private fun showPopupWithBasic(mainClass: KtClass, me: MouseEvent) {
         val title = POPUP_TITLE_PREFIX + mainClass.name
         val popup = JBPopupFactory.getInstance()
             .createPopupChooserBuilder<Any>(listOf(" + $POPUP_STEP_MESSAGE"))
@@ -79,18 +77,17 @@ class KediatrHandlerClassMarker : LineMarkerProvider {
             .setResizable(false)
             .setRequestFocus(true)
             .setCancelOnWindowDeactivation(false)
-            .setItemChosenCallback { element.project.service<CreateNewHandlerService>().create(element) }
+            .setItemChosenCallback { mainClass.project.service<CreateNewHandlerService>().create(mainClass) }
             .createPopup()
         popup.show(RelativePoint(Point(me.xOnScreen + 30, me.yOnScreen + 20)))
     }
 
-    private fun showPopupWithIcon(element: PsiElement, me: MouseEvent) {
-        val mainClass = (element.parent as KtFile).classes.firstOrNull() ?: return
+    private fun showPopupWithIcon(mainClass: KtClass, me: MouseEvent) {
         val title = POPUP_TITLE_PREFIX + mainClass.name
         val options = listOf(POPUP_STEP_MESSAGE)
         val step = object : BaseListPopupStep<String>(title, options, Icons.createNewHandlerGutter) {
             override fun onChosen(selectedValue: String, finalChoice: Boolean): PopupStep<*>? {
-                element.project.service<CreateNewHandlerService>().create(element)
+                mainClass.project.service<CreateNewHandlerService>().create(mainClass)
                 return PopupStep.FINAL_CHOICE
             }
         }
