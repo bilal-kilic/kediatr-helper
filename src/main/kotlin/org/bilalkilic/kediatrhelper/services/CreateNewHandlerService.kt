@@ -19,7 +19,7 @@ import org.jetbrains.kotlin.psi.KtFile
 @Service
 class CreateNewHandlerService {
 
-    fun create(mainClass: KtClass, selectedValue: String) {
+    fun create(mainClass: KtClass, selectedValue: PopupStepForHandler) {
         val directory = mainClass.containingFile.containingDirectory
 
         val kediatrSuperType = mainClass.superTypeListEntries.first {
@@ -42,17 +42,17 @@ class CreateNewHandlerService {
         newHandlerClass.navigate(true)
     }
 
-    private fun getTemplateNameAndSuffix(kediatrSuperType: String, selectedValue: String): Pair<String, String>? {
+    private fun getTemplateNameAndSuffix(kediatrSuperType: String, selectedValue: PopupStepForHandler): Pair<String, String>? {
         return when {
             kediatrSuperType.isCommand() -> {
-                if (selectedValue.isAsync()) {
+                if (selectedValue.type.isAsync()) {
                     Pair(TEMPLATE_FILE_HANDLER_COMMAND_ASYNC, SUFFIX_HANDLER_ASYNC)
                 } else {
                     Pair(TEMPLATE_FILE_HANDLER_COMMAND, SUFFIX_HANDLER)
                 }
             }
             kediatrSuperType.isQuery() -> {
-                if (selectedValue.isAsync()) {
+                if (selectedValue.type.isAsync()) {
                     Pair(TEMPLATE_FILE_HANDLER_QUERY_ASYNC, SUFFIX_HANDLER_ASYNC)
                 } else {
                     Pair(TEMPLATE_FILE_HANDLER_QUERY, SUFFIX_HANDLER)

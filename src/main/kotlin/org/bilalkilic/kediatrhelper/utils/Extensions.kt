@@ -22,6 +22,5 @@ fun String.containsAny(array: Array<String>): Boolean {
     return array.any { this.contains(it) }
 }
 
-fun String.isAsync() = this.contains("Async")
 fun String.isQuery() = this.contains("Query")
 fun String.isCommand() = this.contains("Command")
