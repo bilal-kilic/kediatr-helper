@@ -1,0 +1,13 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME} #end
+#parse("File Header.java")
+
+import com.trendyol.kediatr.AsyncCommandHandler
+import org.springframework.stereotype.Component
+
+@Component
+class ${CLASS} : AsyncCommandHandler<${MESSAGE}> {
+
+    override suspend fun handleAsync(command: ${MESSAGE}) {
+        TODO("Not yet implemented")
+    }
+}
