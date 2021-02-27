@@ -13,7 +13,9 @@
         <codeInsight.lineMarkerProvider language="kotlin" implementationClass="org.bilalkilic.kediatrhelper.listeners.KediatrHandlerClassMarker"/>
         <projectService serviceImplementation="org.bilalkilic.kediatrhelper.services.HandlerService"/>
         <internalFileTemplate name="createNewQueryHandler"/>
+        <internalFileTemplate name="createNewQueryAsyncHandler"/>
         <internalFileTemplate name="createNewCommandHandler"/>
+        <internalFileTemplate name="createNewCommandAsyncHandler"/>
     </extensions>
 
     <applicationListeners>
