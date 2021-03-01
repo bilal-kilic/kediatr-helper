@@ -1,0 +1,13 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME} #end
+#parse("File Header.java")
+
+import com.trendyol.kediatr.AsyncQueryHandler
+import org.springframework.stereotype.Component
+
+@Component
+class ${CLASS} : AsyncQueryHandler<${RETURN}, ${MESSAGE}> {
+
+    override suspend fun handleAsync(query: ${MESSAGE}): ${RETURN} {
+        TODO("Not yet implemented")
+    }
+}
