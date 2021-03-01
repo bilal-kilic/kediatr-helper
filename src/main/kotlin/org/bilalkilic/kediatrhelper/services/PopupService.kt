@@ -12,6 +12,7 @@ import org.bilalkilic.kediatrhelper.utils.PopupConstants.POPUP_WIDTH_MULTIPLIER
 import org.jetbrains.kotlin.psi.KtFile
 import java.awt.Dimension
 import java.awt.Point
+import javax.swing.Icon
 
 @Service
 class PopupService {
@@ -21,6 +22,13 @@ class PopupService {
             val steps = object : BaseListPopupStep<PopupItem>(title, items, icon) {
                 override fun getTextFor(value: PopupItem): String {
                     return value.message
+                }
+
+                override fun getIconFor(value: PopupItem): Icon {
+                    if (value.scope == ItemScope.NAVIGATE) {
+                        return Icons.navigateToHandlerGutter
+                    }
+                    return Icons.createNewHandlerGutter
                 }
 
                 override fun onChosen(selectedValue: PopupItem, finalChoice: Boolean): PopupStep<*>? {
