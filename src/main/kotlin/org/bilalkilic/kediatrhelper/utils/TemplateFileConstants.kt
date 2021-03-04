@@ -1,7 +1,6 @@
 package org.bilalkilic.kediatrhelper.utils
 
 object TemplateFileConstants {
-
     const val CLASS = "CLASS"
     const val RETURN = "RETURN"
     const val MESSAGE = "MESSAGE"
@@ -11,5 +10,4 @@ object TemplateFileConstants {
     const val TEMPLATE_FILE_HANDLER_QUERY_ASYNC = "createNewQueryAsyncHandler"
     const val TEMPLATE_FILE_HANDLER_COMMAND = "createNewCommandHandler"
     const val TEMPLATE_FILE_HANDLER_COMMAND_ASYNC = "createNewCommandAsyncHandler"
-
 }
