@@ -21,6 +21,6 @@ style:
     excludeCommentStatements: false
   ReturnCount:
     active: true
-    max: 4
+    max: 5
   WildcardImport:
     active: false

@@ -2,9 +2,7 @@
 #parse("File Header.java")
 
 import com.trendyol.kediatr.CommandHandler
-import org.springframework.stereotype.Component
 
-@Component
 class ${CLASS} : CommandHandler<${MESSAGE}> {
 
     override fun handle(command: ${MESSAGE}) {

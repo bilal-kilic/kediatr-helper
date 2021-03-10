@@ -16,6 +16,8 @@
         <internalFileTemplate name="createNewQueryAsyncHandler"/>
         <internalFileTemplate name="createNewCommandHandler"/>
         <internalFileTemplate name="createNewCommandAsyncHandler"/>
+        <internalFileTemplate name="createNewNotificationHandler"/>
+        <internalFileTemplate name="createNewNotificationAsyncHandler"/>
     </extensions>
 
     <applicationListeners>

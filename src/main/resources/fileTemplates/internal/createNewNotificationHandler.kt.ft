@@ -1,0 +1,11 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME} #end
+#parse("File Header.java")
+
+import com.trendyol.kediatr.NotificationHandler
+
+class ${CLASS} : NotificationHandler<${MESSAGE}> {
+
+    override fun handle(notification: ${MESSAGE}) {
+        TODO("Not yet implemented")
+    }
+}

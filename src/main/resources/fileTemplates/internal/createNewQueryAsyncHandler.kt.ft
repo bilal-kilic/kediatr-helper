@@ -2,10 +2,8 @@
 #parse("File Header.java")
 
 import com.trendyol.kediatr.AsyncQueryHandler
-import org.springframework.stereotype.Component
 
-@Component
-class ${CLASS} : AsyncQueryHandler<${RETURN}, ${MESSAGE}> {
+class ${CLASS} : AsyncQueryHandler<${MESSAGE}, ${RETURN}> {
 
     override suspend fun handleAsync(query: ${MESSAGE}): ${RETURN} {
         TODO("Not yet implemented")

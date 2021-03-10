@@ -2,10 +2,8 @@
 #parse("File Header.java")
 
 import com.trendyol.kediatr.QueryHandler
-import org.springframework.stereotype.Component
 
-@Component
-class ${CLASS} : QueryHandler<${RETURN}, ${MESSAGE}> {
+class ${CLASS} : QueryHandler<${MESSAGE}, ${RETURN}> {
 
     override fun handle(query: ${MESSAGE}): ${RETURN} {
         TODO("Not yet implemented")

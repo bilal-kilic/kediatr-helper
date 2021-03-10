@@ -14,8 +14,8 @@ import com.intellij.psi.util.CachedValueProvider
 import com.intellij.psi.util.CachedValuesManager
 import com.intellij.psi.util.PsiModificationTracker
 import com.jetbrains.rd.util.firstOrNull
-import org.bilalkilic.kediatrhelper.utils.KediatrConstants
-import org.bilalkilic.kediatrhelper.utils.KediatrConstants.KediatrHandlerMap
+import org.bilalkilic.kediatrhelper.utils.constants.KediatrConstants
+import org.bilalkilic.kediatrhelper.utils.constants.KediatrConstants.KediatrHandlerMap
 
 @Service
 class HandlerService {
@@ -25,7 +25,7 @@ class HandlerService {
     fun getCachedHandlerClasses(): Collection<PsiClass> = cachedHandlerClasses.value
     fun getCachedCommandTypes(): Collection<PsiClass> = cachedCommandClasses.value
 
-    fun findHandler(element: PsiElement, superQualifiedNames: Collection<String>, className: String): List<PsiClass> {
+    fun findHandler(element: PsiElement, superQualifiedNames: Collection<String>, classNames: List<String>): List<PsiClass> {
         val scope = GlobalSearchScope.projectScope(element.project)
         val handlerTypes = getHandlerTypes(superQualifiedNames)
 
@@ -33,7 +33,7 @@ class HandlerService {
             ClassInheritorsSearch.search(type, scope, false).filter {
                 it.superTypes.any { st ->
                     if (st is PsiClassReferenceType) st.parameters.any { p ->
-                        if (p is PsiClassReferenceType) p.name == className else false
+                        (p is PsiClassReferenceType) && classNames.contains(p.name)
                     } else false
                 }
             }

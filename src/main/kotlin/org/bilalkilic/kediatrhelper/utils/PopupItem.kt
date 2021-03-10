@@ -16,6 +16,14 @@ enum class HandlerType {
     fun isAsync(): Boolean = this == ASYNC
 }
 
+fun figureOutHandlerType(handlerName: String?): HandlerType {
+    return when {
+        handlerName.isNullOrEmpty() -> HandlerType.BASIC
+        handlerName.isAsync() -> HandlerType.ASYNC
+        else -> HandlerType.BASIC
+    }
+}
+
 enum class ItemScope {
     NAVIGATE,
     CREATE;

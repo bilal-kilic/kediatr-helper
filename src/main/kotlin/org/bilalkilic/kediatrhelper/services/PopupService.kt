@@ -7,18 +7,19 @@ import com.intellij.openapi.ui.popup.JBPopupFactory
 import com.intellij.openapi.ui.popup.PopupStep
 import com.intellij.openapi.ui.popup.util.BaseListPopupStep
 import com.intellij.ui.awt.RelativePoint
-import org.bilalkilic.kediatrhelper.utils.Icons
 import org.bilalkilic.kediatrhelper.utils.ItemScope
-import org.bilalkilic.kediatrhelper.utils.KediatrConstants
 import org.bilalkilic.kediatrhelper.utils.KediatrPopupModel
-import org.bilalkilic.kediatrhelper.utils.PopupConstants.POPUP_WIDTH_MULTIPLIER
-import org.bilalkilic.kediatrhelper.utils.PopupConstants.XAxisPadding
-import org.bilalkilic.kediatrhelper.utils.PopupConstants.YAxisPadding
 import org.bilalkilic.kediatrhelper.utils.PopupItem
-import org.bilalkilic.kediatrhelper.utils.TemplateFileConstants
+import org.bilalkilic.kediatrhelper.utils.constants.Icons
+import org.bilalkilic.kediatrhelper.utils.constants.KediatrConstants
+import org.bilalkilic.kediatrhelper.utils.constants.PopupConstants.POPUP_WIDTH_MULTIPLIER
+import org.bilalkilic.kediatrhelper.utils.constants.PopupConstants.XAxisPadding
+import org.bilalkilic.kediatrhelper.utils.constants.PopupConstants.YAxisPadding
+import org.bilalkilic.kediatrhelper.utils.constants.TemplateFileConstants
 import org.bilalkilic.kediatrhelper.utils.containsAny
 import org.bilalkilic.kediatrhelper.utils.getQueryReturnType
 import org.bilalkilic.kediatrhelper.utils.isCommand
+import org.bilalkilic.kediatrhelper.utils.isNotification
 import org.bilalkilic.kediatrhelper.utils.isQuery
 import org.jetbrains.kotlin.psi.KtFile
 import java.awt.Dimension
@@ -29,16 +30,14 @@ import javax.swing.Icon
 class PopupService {
     fun show(popupModel: KediatrPopupModel) {
         with(popupModel) {
-            val steps = object : BaseListPopupStep<PopupItem>(title, items, icon) {
+            val steps = object : BaseListPopupStep<PopupItem>(title, items.toList(), icon) {
                 override fun getTextFor(value: PopupItem): String {
                     return value.message
                 }
 
                 override fun getIconFor(value: PopupItem): Icon {
-                    if (value.scope == ItemScope.NAVIGATE) {
-                        return Icons.navigateToHandlerGutter
-                    }
-                    return Icons.createNewHandlerGutter
+                    return if (value.scope == ItemScope.NAVIGATE) Icons.navigateToHandlerGutter
+                    else Icons.createNewHandlerGutter
                 }
 
                 override fun onChosen(selectedValue: PopupItem, finalChoice: Boolean): PopupStep<*>? {
@@ -104,6 +103,16 @@ class PopupService {
                     )
                 } else {
                     Pair(TemplateFileConstants.TEMPLATE_FILE_HANDLER_QUERY, TemplateFileConstants.SUFFIX_HANDLER)
+                }
+            }
+            kediatrSuperType.isNotification() -> {
+                if (selectedValue.type.isAsync()) {
+                    Pair(
+                        TemplateFileConstants.TEMPLATE_FILE_HANDLER_NOTIFICATION_ASYNC,
+                        TemplateFileConstants.SUFFIX_HANDLER_ASYNC
+                    )
+                } else {
+                    Pair(TemplateFileConstants.TEMPLATE_FILE_HANDLER_NOTIFICATION, TemplateFileConstants.SUFFIX_HANDLER)
                 }
             }
             else -> return null
