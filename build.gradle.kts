@@ -60,18 +60,6 @@ intellij {
     setPlugins(*platformPlugins.split(',').map(String::trim).filter(String::isNotEmpty).toTypedArray())
 }
 
-// Configure gradle-changelog-plugin plugin.
-// Read more: https://github.com/JetBrains/gradle-changelog-plugin
-changelog {
-    version = pluginVersion
-    path = "${project.projectDir}/CHANGELOG.md"
-    header = closure { "[$version] - ${date()}" }
-    itemPrefix = "-"
-    keepUnreleasedSection = true
-    unreleasedTerm = "[Unreleased]"
-    groups = listOf("Added", "Changed", "Deprecated", "Removed", "Fixed", "Security")
-}
-
 // Configure detekt plugin.
 // Read more: https://detekt.github.io/detekt/kotlindsl.html
 detekt {
@@ -122,7 +110,7 @@ tasks {
         // Get the latest available change notes from the changelog file
         changeNotes(
             closure {
-                changelog.getLatest().toHTML()
+                changelog.getAll().values.map { it.toHTML() }
             }
         )
     }
@@ -139,4 +127,15 @@ tasks {
         // https://plugins.jetbrains.com/docs/intellij/deployment.html#specifying-a-release-channel
         channels(pluginVersion.split('-').getOrElse(1) { "default" }.split('.').first())
     }
+}
+
+// Configure gradle-changelog-plugin plugin.
+// Read more: https://github.com/JetBrains/gradle-changelog-plugin
+changelog {
+    version = pluginVersion
+    path = "${project.projectDir}/CHANGELOG.md"
+    header = closure { "[$version] - ${date()}" }
+    itemPrefix = "-"
+    keepUnreleasedSection = true
+    groups = listOf("Added", "Changed", "Deprecated", "Removed", "Fixed", "Security")
 }
