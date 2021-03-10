@@ -13,8 +13,9 @@ import org.bilalkilic.kediatrhelper.utils.*
 import org.bilalkilic.kediatrhelper.utils.PopupConstants.POPUP_STEP_HANDLER_ASYNC
 import org.bilalkilic.kediatrhelper.utils.PopupConstants.POPUP_STEP_HANDLER_BASIC
 import org.bilalkilic.kediatrhelper.utils.PopupConstants.POPUP_STEP_PREFIX_NAVIGATE
-import org.bilalkilic.kediatrhelper.utils.PopupConstants.POPUP_TITLE_PREFIX_MULTIPLE_HANDLERS
-import org.bilalkilic.kediatrhelper.utils.PopupConstants.POPUP_TITLE_PREFIX_NEW_HANDLER
+import org.bilalkilic.kediatrhelper.utils.PopupConstants.POPUP_TITLE_PREFIX_FOR_MULTIPLE_HANDLERS
+import org.bilalkilic.kediatrhelper.utils.PopupConstants.POPUP_TITLE_PREFIX_FOR_NO_HANDLER
+import org.bilalkilic.kediatrhelper.utils.PopupConstants.POPUP_TITLE_PREFIX_FOR_ONE_HANDLER
 import org.jetbrains.kotlin.asJava.classes.KtLightClassForSourceDeclaration
 import org.jetbrains.kotlin.idea.debugger.sequence.psi.resolveType
 import org.jetbrains.kotlin.psi.KtCallExpression
@@ -70,12 +71,15 @@ class KediatrHandlerClassMarker : LineMarkerProvider {
 
     private fun showPopupToCreateOrNavigateHandler(mainClass: KtClass, handlers: List<PsiClass>, me: MouseEvent) {
         val options = mutableListOf<PopupItem>()
+        var titlePrefix = ""
         when {
             handlers.isEmpty() -> {
+                titlePrefix = POPUP_TITLE_PREFIX_FOR_NO_HANDLER
                 options.add(PopupItem(HandlerType.BASIC, POPUP_STEP_HANDLER_BASIC, mainClass, ItemScope.CREATE))
                 options.add(PopupItem(HandlerType.ASYNC, POPUP_STEP_HANDLER_ASYNC, mainClass, ItemScope.CREATE))
             }
             handlers.size == 1 -> {
+                titlePrefix = POPUP_TITLE_PREFIX_FOR_ONE_HANDLER
                 val handler = handlers.firstOrNull() ?: return
                 // todo : not sure that it is a good way of converting PsiClass to KtClass ?
                 val referenceClass = (handler as KtLightClassForSourceDeclaration).kotlinOrigin as KtClass
@@ -94,7 +98,7 @@ class KediatrHandlerClassMarker : LineMarkerProvider {
             mainClass.project.service<PopupService>().handle(it)
         }
         val popupModel = KediatrPopupModel(
-            title = POPUP_TITLE_PREFIX_NEW_HANDLER + mainClass.name,
+            title = titlePrefix + mainClass.name,
             items = options,
             icon = Icons.createNewHandlerGutter,
             onChosenFunction = func,
@@ -115,7 +119,7 @@ class KediatrHandlerClassMarker : LineMarkerProvider {
             it.referenceClass.navigate(true)
         }
         val popupModel = KediatrPopupModel(
-            title = POPUP_TITLE_PREFIX_MULTIPLE_HANDLERS + mainClass.name,
+            title = POPUP_TITLE_PREFIX_FOR_MULTIPLE_HANDLERS + mainClass.name,
             items = options,
             icon = Icons.navigateToHandlerGutter,
             onChosenFunction = func,
