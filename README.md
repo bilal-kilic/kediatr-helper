@@ -10,7 +10,10 @@ Kediatr Helper
 
 ### Features:
  - Gutter icons for command classes and commandBus executions
- - Go to handler functionality in Go To menu and gutter icons 
+ - Go to handler functionality in Go To menu and gutter icons
+ - Navigating to multiple handlers of a Notification
+ - Navigating to handlers of inheriting types
+ - Creating handlers for command types
 
 <!-- Plugin description end -->
 
@@ -26,11 +29,17 @@ Gutter Icon
 
 ![Alt Text](docs/go_to_handler_gutter.gif)
 
+Create Handler
+
+![Alt_Text](docs/create_handler.gif)
+
 
 ### TODO
 
-- [ ] Add support for finding all handlers of notification
+- [x] Add support for finding all handlers of notification
 - [ ] Change icons to svg files
-- [ ] Add create handler functionality for command types
+- [x] Add create handler functionality for command types
 - [x] Mark types inherited from Command types
 - [ ] Make project not require restart when enabling
+- [ ] Make sure gutter icons only show up for function calls to CommandBus
+- [ ] Show PipelineBehaviours for CommandHandlers
