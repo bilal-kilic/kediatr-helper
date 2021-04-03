@@ -1,4 +1,4 @@
-package org.bilalkilic.kediatrhelper.utils
+package org.bilalkilic.kediatrhelper.utils.extensions
 
 import com.intellij.psi.PsiClass
 import org.jetbrains.kotlin.asJava.classes.KtLightClassForSourceDeclaration

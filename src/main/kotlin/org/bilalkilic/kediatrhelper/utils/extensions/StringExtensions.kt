@@ -1,9 +1,16 @@
-package org.bilalkilic.kediatrhelper.utils
+package org.bilalkilic.kediatrhelper.utils.extensions
 
 fun String.getQueryReturnType(): String {
     val r = Regex("(?<=Query<)(.*)(?=>)")
     val matches = r.find(this)
     return matches?.groupValues?.first() ?: ""
+}
+
+fun String?.safeContains(str: String) = this?.contains(str) ?: false
+
+fun String.isLowerThanVersion(version: String): Boolean {
+    return this.split(".").last().toInt() <
+            version.split(".").last().toInt()
 }
 
 fun String.containsAny(array: Array<String>) = array.any { this.contains(it) }

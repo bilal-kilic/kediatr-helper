@@ -12,22 +12,27 @@ import org.bilalkilic.kediatrhelper.utils.KediatrPopupModel
 import org.bilalkilic.kediatrhelper.utils.PopupItem
 import org.bilalkilic.kediatrhelper.utils.constants.Icons
 import org.bilalkilic.kediatrhelper.utils.constants.KediatrConstants
+import org.bilalkilic.kediatrhelper.utils.constants.KediatrConstants.KediatrQueryHandlerStructureChangeVersion
 import org.bilalkilic.kediatrhelper.utils.constants.PopupConstants.POPUP_WIDTH_MULTIPLIER
 import org.bilalkilic.kediatrhelper.utils.constants.PopupConstants.XAxisPadding
 import org.bilalkilic.kediatrhelper.utils.constants.PopupConstants.YAxisPadding
 import org.bilalkilic.kediatrhelper.utils.constants.TemplateFileConstants
-import org.bilalkilic.kediatrhelper.utils.containsAny
-import org.bilalkilic.kediatrhelper.utils.getQueryReturnType
-import org.bilalkilic.kediatrhelper.utils.isCommand
-import org.bilalkilic.kediatrhelper.utils.isNotification
-import org.bilalkilic.kediatrhelper.utils.isQuery
+import org.bilalkilic.kediatrhelper.utils.extensions.*
 import org.jetbrains.kotlin.psi.KtFile
 import java.awt.Dimension
 import java.awt.Point
+import java.util.*
 import javax.swing.Icon
 
 @Service
 class PopupService {
+
+    private var version = "1.0.14"
+
+    fun setKediatrVersion(version: String) {
+        this.version = version
+    }
+
     fun show(popupModel: KediatrPopupModel) {
         with(popupModel) {
             val steps = object : BaseListPopupStep<PopupItem>(title, items.toList(), icon) {
@@ -70,7 +75,12 @@ class PopupService {
         val templateManager = FileTemplateManager.getInstance(mainClass.project)
         val props = templateManager.defaultProperties
         props += TemplateFileConstants.MESSAGE to mainClass.name
+        props += TemplateFileConstants.MESSAGE_HANDLER to mainClass.name
         props += TemplateFileConstants.RETURN to kediatrSuperType.getQueryReturnType()
+        props += TemplateFileConstants.RETURN_HANDLER to kediatrSuperType.getQueryReturnType()
+        if (version.isLowerThanVersion(KediatrQueryHandlerStructureChangeVersion)) {
+            swapMessageAndReturnHandlerParams(props)
+        }
 
         val templateNameAndSuffix = getTemplateNameAndSuffix(kediatrSuperType, popupItem) ?: return
         val finalHandlerName = mainClass.name + templateNameAndSuffix.second
@@ -81,6 +91,12 @@ class PopupService {
         val newHandlerFile = FileTemplateUtil.createFromTemplate(template, finalHandlerName, props, directory)
         val newHandlerClass = (newHandlerFile as KtFile).classes.firstOrNull() ?: return
         newHandlerClass.navigate(true)
+    }
+
+    private fun swapMessageAndReturnHandlerParams(props: Properties) {
+        val messageValue = props.getProperty(TemplateFileConstants.MESSAGE_HANDLER)
+        props.setProperty(TemplateFileConstants.MESSAGE_HANDLER, props.getProperty(TemplateFileConstants.RETURN_HANDLER))
+        props.setProperty(TemplateFileConstants.RETURN_HANDLER, messageValue)
     }
 
     private fun getTemplateNameAndSuffix(kediatrSuperType: String, selectedValue: PopupItem): Pair<String, String>? {

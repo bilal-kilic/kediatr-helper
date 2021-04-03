@@ -3,7 +3,7 @@
 
 import com.trendyol.kediatr.AsyncQueryHandler
 
-class ${CLASS} : AsyncQueryHandler<${MESSAGE}, ${RETURN}> {
+class ${CLASS} : AsyncQueryHandler<${MESSAGE_HANDLER}, ${RETURN_HANDLER}> {
 
     override suspend fun handleAsync(query: ${MESSAGE}): ${RETURN} {
         TODO("Not yet implemented")

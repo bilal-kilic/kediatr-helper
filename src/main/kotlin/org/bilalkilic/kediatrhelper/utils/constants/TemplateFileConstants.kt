@@ -4,6 +4,8 @@ object TemplateFileConstants {
     const val CLASS = "CLASS"
     const val RETURN = "RETURN"
     const val MESSAGE = "MESSAGE"
+    const val RETURN_HANDLER = "RETURN_HANDLER"
+    const val MESSAGE_HANDLER = "MESSAGE_HANDLER"
     const val SUFFIX_HANDLER = "Handler"
     const val SUFFIX_HANDLER_ASYNC = "AsyncHandler"
     const val TEMPLATE_FILE_HANDLER_QUERY = "createNewQueryHandler"

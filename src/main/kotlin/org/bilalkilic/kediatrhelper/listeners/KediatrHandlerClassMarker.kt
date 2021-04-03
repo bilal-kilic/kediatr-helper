@@ -21,9 +21,9 @@ import org.bilalkilic.kediatrhelper.utils.constants.PopupConstants.POPUP_STEP_PR
 import org.bilalkilic.kediatrhelper.utils.constants.PopupConstants.POPUP_TITLE_PREFIX_FOR_MULTIPLE_HANDLERS
 import org.bilalkilic.kediatrhelper.utils.constants.PopupConstants.POPUP_TITLE_PREFIX_FOR_NO_HANDLER
 import org.bilalkilic.kediatrhelper.utils.figureOutHandlerType
-import org.bilalkilic.kediatrhelper.utils.getClassNameFromPackage
-import org.bilalkilic.kediatrhelper.utils.getKtClass
-import org.bilalkilic.kediatrhelper.utils.getSerialSuperClassNames
+import org.bilalkilic.kediatrhelper.utils.extensions.getClassNameFromPackage
+import org.bilalkilic.kediatrhelper.utils.extensions.getKtClass
+import org.bilalkilic.kediatrhelper.utils.extensions.getSerialSuperClassNames
 import org.jetbrains.kotlin.idea.debugger.sequence.psi.resolveType
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtClass

@@ -2,6 +2,8 @@ package org.bilalkilic.kediatrhelper.utils.constants
 
 object KediatrConstants {
     const val KediatrPackageName = "com.trendyol.kediatr"
+    const val KediatrDependencyPrefix = "com.trendyol:kediatr"
+    const val KediatrQueryHandlerStructureChangeVersion = "1.0.13"
 
     val KediatrCommandNames = arrayOf(
         "Command",
