@@ -45,4 +45,8 @@
 ### Added 
 - Create handler function implemented
 - Navigating to multiple handlers is now supported
-- Navigating to handlers that implement Super Types is now supported 
+- Navigating to handlers that implement Super Types is now supported
+
+## [1.0.6]
+### Added
+- Added compatibility for `2021.2 EAP`
