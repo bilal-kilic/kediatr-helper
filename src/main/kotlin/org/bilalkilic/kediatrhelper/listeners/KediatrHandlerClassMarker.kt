@@ -10,20 +10,15 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import org.bilalkilic.kediatrhelper.services.HandlerService
 import org.bilalkilic.kediatrhelper.services.PopupService
-import org.bilalkilic.kediatrhelper.utils.HandlerType
-import org.bilalkilic.kediatrhelper.utils.ItemScope
-import org.bilalkilic.kediatrhelper.utils.KediatrPopupModel
-import org.bilalkilic.kediatrhelper.utils.PopupItem
+import org.bilalkilic.kediatrhelper.utils.*
 import org.bilalkilic.kediatrhelper.utils.constants.Icons
 import org.bilalkilic.kediatrhelper.utils.constants.PopupConstants.POPUP_STEP_HANDLER_ASYNC
 import org.bilalkilic.kediatrhelper.utils.constants.PopupConstants.POPUP_STEP_HANDLER_BASIC
 import org.bilalkilic.kediatrhelper.utils.constants.PopupConstants.POPUP_STEP_PREFIX_NAVIGATE
 import org.bilalkilic.kediatrhelper.utils.constants.PopupConstants.POPUP_TITLE_PREFIX_FOR_MULTIPLE_HANDLERS
 import org.bilalkilic.kediatrhelper.utils.constants.PopupConstants.POPUP_TITLE_PREFIX_FOR_NO_HANDLER
-import org.bilalkilic.kediatrhelper.utils.figureOutHandlerType
-import org.bilalkilic.kediatrhelper.utils.getClassNameFromPackage
-import org.bilalkilic.kediatrhelper.utils.getKtClass
-import org.bilalkilic.kediatrhelper.utils.getSerialSuperClassNames
+import org.bilalkilic.kediatrhelper.utils.extensions.getKtClass
+import org.bilalkilic.kediatrhelper.utils.extensions.getSerialSuperClassNames
 import org.jetbrains.kotlin.idea.debugger.sequence.psi.resolveType
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtClass
@@ -96,7 +91,7 @@ class KediatrHandlerClassMarker : LineMarkerProvider {
                 .findHandler(elt, superClassQualifiedNames, commandTypeNames)
 
             when {
-                handlers.isEmpty() -> showPopupToCreateHandler(elt as KtClass, me)
+                handlers.isEmpty() -> if (elt is KtClass) showPopupToCreateHandler(elt, me)
                 handlers.size >= 2 -> showPopupToNavigateHandlers(project, handlers, me)
                 handlers.size == 1 -> handlers.first().navigate(false)
             }
@@ -129,7 +124,8 @@ class KediatrHandlerClassMarker : LineMarkerProvider {
 
             val handlerType = figureOutHandlerType(handlerName)
             val message = POPUP_STEP_PREFIX_NAVIGATE + handler.name
-            val referenceClass = handler.getKtClass()
+            val referenceClass = handler.getKtClass() ?: return@forEach
+
             options.add(PopupItem(handlerType, message, referenceClass, ItemScope.NAVIGATE))
         }
 

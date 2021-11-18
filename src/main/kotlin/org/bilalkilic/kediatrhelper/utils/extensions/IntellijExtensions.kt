@@ -1,4 +1,4 @@
-package org.bilalkilic.kediatrhelper.utils
+package org.bilalkilic.kediatrhelper.utils.extensions
 
 import com.intellij.psi.PsiClass
 import org.jetbrains.kotlin.asJava.classes.KtLightClassForSourceDeclaration
@@ -13,4 +13,4 @@ fun KtClassOrObject.getSerialSuperClassNames() = this.resolveToDescriptorIfAny()
     ?.toList()
     ?.map { it.classId?.asSingleFqName()?.asString().toString() } ?: emptyList()
 
-fun PsiClass.getKtClass() = (this as KtLightClassForSourceDeclaration).kotlinOrigin as KtClass
+fun PsiClass.getKtClass() = (this as? KtLightClassForSourceDeclaration)?.kotlinOrigin as? KtClass

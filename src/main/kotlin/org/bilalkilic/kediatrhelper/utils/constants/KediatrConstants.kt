@@ -21,6 +21,6 @@ object KediatrConstants {
     val KediatrHandlerMap = mapOf(
         "com.trendyol.kediatr.Command" to listOf("com.trendyol.kediatr.CommandHandler", "com.trendyol.kediatr.AsyncCommandHandler"),
         "com.trendyol.kediatr.Query" to listOf("com.trendyol.kediatr.QueryHandler", "com.trendyol.kediatr.AsyncQueryHandler"),
-        "com.trendyol.kediatr.Notification" to listOf("com.trendyol.kediatr.NotificationHandler", "com.trendyol.kediatr.NotificationQueryHandler"),
+        "com.trendyol.kediatr.Notification" to listOf("com.trendyol.kediatr.NotificationHandler", "com.trendyol.kediatr.AsyncNotificationHandler"),
     )
 }

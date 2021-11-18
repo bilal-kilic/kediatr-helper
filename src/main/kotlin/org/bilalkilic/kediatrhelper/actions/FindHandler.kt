@@ -6,7 +6,7 @@ import com.intellij.openapi.actionSystem.LangDataKeys
 import com.intellij.openapi.components.service
 import org.bilalkilic.kediatrhelper.services.HandlerService
 import org.bilalkilic.kediatrhelper.utils.getClassNameFromPackage
-import org.bilalkilic.kediatrhelper.utils.getSerialSuperClassNames
+import org.bilalkilic.kediatrhelper.utils.extensions.getSerialSuperClassNames
 import org.jetbrains.kotlin.psi.KtClass
 
 class FindHandler : AnAction() {

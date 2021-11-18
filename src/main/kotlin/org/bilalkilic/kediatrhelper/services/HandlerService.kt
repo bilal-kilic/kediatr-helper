@@ -30,7 +30,7 @@ class HandlerService {
         val handlerTypes = getHandlerTypes(superQualifiedNames)
 
         return handlerTypes.map { type ->
-            ClassInheritorsSearch.search(type, scope, false).filter {
+            ClassInheritorsSearch.search(type, scope, true).filter {
                 it.superTypes.any { st ->
                     if (st is PsiClassReferenceType) st.parameters.any { p ->
                         (p is PsiClassReferenceType) && classNames.contains(p.name)
