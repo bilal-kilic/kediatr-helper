@@ -16,11 +16,11 @@ import org.bilalkilic.kediatrhelper.utils.constants.PopupConstants.POPUP_WIDTH_M
 import org.bilalkilic.kediatrhelper.utils.constants.PopupConstants.XAxisPadding
 import org.bilalkilic.kediatrhelper.utils.constants.PopupConstants.YAxisPadding
 import org.bilalkilic.kediatrhelper.utils.constants.TemplateFileConstants
-import org.bilalkilic.kediatrhelper.utils.containsAny
-import org.bilalkilic.kediatrhelper.utils.getQueryReturnType
-import org.bilalkilic.kediatrhelper.utils.isCommand
-import org.bilalkilic.kediatrhelper.utils.isNotification
-import org.bilalkilic.kediatrhelper.utils.isQuery
+import org.bilalkilic.kediatrhelper.utils.extensions.containsAny
+import org.bilalkilic.kediatrhelper.utils.extensions.getQueryReturnType
+import org.bilalkilic.kediatrhelper.utils.extensions.isCommand
+import org.bilalkilic.kediatrhelper.utils.extensions.isNotification
+import org.bilalkilic.kediatrhelper.utils.extensions.isQuery
 import org.jetbrains.kotlin.psi.KtFile
 import java.awt.Dimension
 import java.awt.Point

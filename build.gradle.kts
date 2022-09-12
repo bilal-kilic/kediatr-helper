@@ -3,7 +3,6 @@ import org.jetbrains.changelog.closure
 import org.jetbrains.changelog.date
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jetbrains.intellij.tasks.*
 
 plugins {
     // Java support
