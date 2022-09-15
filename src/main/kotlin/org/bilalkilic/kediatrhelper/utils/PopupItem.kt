@@ -1,5 +1,6 @@
 package org.bilalkilic.kediatrhelper.utils
 
+import org.bilalkilic.kediatrhelper.utils.extensions.isAsync
 import org.jetbrains.kotlin.psi.KtClass
 
 data class PopupItem(

@@ -1,4 +1,4 @@
-package org.bilalkilic.kediatrhelper.utils
+package org.bilalkilic.kediatrhelper.utils.extensions
 
 fun String.getQueryReturnType(): String {
     val r = Regex("(?<=Query<)(.*)(?=>)")
