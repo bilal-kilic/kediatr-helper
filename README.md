@@ -2,7 +2,7 @@ Kediatr Helper
 =======================
 
 [![CodeFactor](https://www.codefactor.io/repository/github/bilal-kilic/kediatr-helper/badge)](https://www.codefactor.io/repository/github/bilal-kilic/kediatr-helper)
-[![JetBrains Plugins](https://img.shields.io/badge/1.10.0-kediatr--helper-brightgreen)](https://plugins.jetbrains.com/plugin/16017-kediatr-helper)
+[![JetBrains Plugins](https://img.shields.io/badge/1.10.1-kediatr--helper-brightgreen)](https://plugins.jetbrains.com/plugin/16017-kediatr-helper)
 
 
 <!-- Plugin description -->

@@ -54,3 +54,7 @@
 ## [1.0.7]
 ### Added
 - Added compatibility for `2021.3 EAP`
+-
+## [1.10.1]
+### Added
+- Added compatibility for `2022.3.2`
