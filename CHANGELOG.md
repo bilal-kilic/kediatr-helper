@@ -58,3 +58,7 @@
 ## [1.10.1]
 ### Added
 - Added compatibility for `2022.3.2`
+-
+## [1.10.2]
+### Added
+- Added compatibility for `2023.1`
