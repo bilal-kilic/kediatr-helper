@@ -16,4 +16,6 @@ fun String.isNotification() = this.contains("Notification")
 
 fun String.isCommand() = this.contains("Command")
 
+fun String.isCommandWithResult() = this.contains("CommandWithResult")
+
 fun String.getClassNameFromPackage() = split(".").last()
