@@ -81,17 +81,6 @@ class PopupService {
 
     private fun getTemplateNameAndSuffix(kediatrSuperType: String, selectedValue: PopupItem): Pair<String, String>? {
         return when {
-            kediatrSuperType.isCommand() -> {
-                if (selectedValue.type.isAsync()) {
-                    Pair(
-                        TemplateFileConstants.TEMPLATE_FILE_HANDLER_COMMAND_ASYNC,
-                        TemplateFileConstants.SUFFIX_HANDLER_ASYNC
-                    )
-                } else {
-                    Pair(TemplateFileConstants.TEMPLATE_FILE_HANDLER_COMMAND, TemplateFileConstants.SUFFIX_HANDLER)
-                }
-            }
-
             kediatrSuperType.isCommandWithResult() -> {
                 if (selectedValue.type.isAsync()) {
                     Pair(
@@ -103,6 +92,17 @@ class PopupService {
                         TemplateFileConstants.TEMPLATE_FILE_HANDLER_COMMAND_WITH_RESULT,
                         TemplateFileConstants.SUFFIX_HANDLER
                     )
+                }
+            }
+
+            kediatrSuperType.isCommand() -> {
+                if (selectedValue.type.isAsync()) {
+                    Pair(
+                        TemplateFileConstants.TEMPLATE_FILE_HANDLER_COMMAND_ASYNC,
+                        TemplateFileConstants.SUFFIX_HANDLER_ASYNC
+                    )
+                } else {
+                    Pair(TemplateFileConstants.TEMPLATE_FILE_HANDLER_COMMAND, TemplateFileConstants.SUFFIX_HANDLER)
                 }
             }
 
