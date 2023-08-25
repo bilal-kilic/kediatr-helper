@@ -1,7 +1,7 @@
 package org.bilalkilic.kediatrhelper.utils.extensions
 
-fun String.getQueryReturnType(): String {
-    val r = Regex("(?<=Query<)(.*)(?=>)")
+fun String.getReturnType(): String {
+    val r = Regex("(?<=Query|CommandWithResult<)(.*)(?=>)")
     val matches = r.find(this)
     return matches?.groupValues?.first() ?: ""
 }
