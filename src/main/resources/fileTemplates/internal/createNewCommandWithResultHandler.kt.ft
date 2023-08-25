@@ -1,0 +1,11 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME} #end
+#parse("File Header.java")
+
+import com.trendyol.kediatr.CommandWithResultHandler
+
+class ${CLASS} : CommandWithResultHandler<${MESSAGE}, ${RETURN}> {
+
+    override fun handle(command: ${MESSAGE}): ${RETURN} {
+        TODO("Not yet implemented")
+    }
+}
