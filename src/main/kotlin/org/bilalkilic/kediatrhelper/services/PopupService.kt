@@ -16,11 +16,7 @@ import org.bilalkilic.kediatrhelper.utils.constants.PopupConstants.POPUP_WIDTH_M
 import org.bilalkilic.kediatrhelper.utils.constants.PopupConstants.XAxisPadding
 import org.bilalkilic.kediatrhelper.utils.constants.PopupConstants.YAxisPadding
 import org.bilalkilic.kediatrhelper.utils.constants.TemplateFileConstants
-import org.bilalkilic.kediatrhelper.utils.extensions.containsAny
-import org.bilalkilic.kediatrhelper.utils.extensions.getQueryReturnType
-import org.bilalkilic.kediatrhelper.utils.extensions.isCommand
-import org.bilalkilic.kediatrhelper.utils.extensions.isNotification
-import org.bilalkilic.kediatrhelper.utils.extensions.isQuery
+import org.bilalkilic.kediatrhelper.utils.extensions.*
 import org.jetbrains.kotlin.psi.KtFile
 import java.awt.Dimension
 import java.awt.Point
@@ -70,7 +66,7 @@ class PopupService {
         val templateManager = FileTemplateManager.getInstance(mainClass.project)
         val props = templateManager.defaultProperties
         props += TemplateFileConstants.MESSAGE to mainClass.name
-        props += TemplateFileConstants.RETURN to kediatrSuperType.getQueryReturnType()
+        props += TemplateFileConstants.RETURN to kediatrSuperType.getReturnType()
 
         val templateNameAndSuffix = getTemplateNameAndSuffix(kediatrSuperType, popupItem) ?: return
         val finalHandlerName = mainClass.name + templateNameAndSuffix.second
@@ -85,6 +81,20 @@ class PopupService {
 
     private fun getTemplateNameAndSuffix(kediatrSuperType: String, selectedValue: PopupItem): Pair<String, String>? {
         return when {
+            kediatrSuperType.isCommandWithResult() -> {
+                if (selectedValue.type.isAsync()) {
+                    Pair(
+                        TemplateFileConstants.TEMPLATE_FILE_HANDLER_COMMAND_WITH_RESULT_ASYNC,
+                        TemplateFileConstants.SUFFIX_HANDLER_ASYNC
+                    )
+                } else {
+                    Pair(
+                        TemplateFileConstants.TEMPLATE_FILE_HANDLER_COMMAND_WITH_RESULT,
+                        TemplateFileConstants.SUFFIX_HANDLER
+                    )
+                }
+            }
+
             kediatrSuperType.isCommand() -> {
                 if (selectedValue.type.isAsync()) {
                     Pair(
@@ -95,6 +105,7 @@ class PopupService {
                     Pair(TemplateFileConstants.TEMPLATE_FILE_HANDLER_COMMAND, TemplateFileConstants.SUFFIX_HANDLER)
                 }
             }
+
             kediatrSuperType.isQuery() -> {
                 if (selectedValue.type.isAsync()) {
                     Pair(
@@ -105,6 +116,7 @@ class PopupService {
                     Pair(TemplateFileConstants.TEMPLATE_FILE_HANDLER_QUERY, TemplateFileConstants.SUFFIX_HANDLER)
                 }
             }
+
             kediatrSuperType.isNotification() -> {
                 if (selectedValue.type.isAsync()) {
                     Pair(
@@ -115,6 +127,7 @@ class PopupService {
                     Pair(TemplateFileConstants.TEMPLATE_FILE_HANDLER_NOTIFICATION, TemplateFileConstants.SUFFIX_HANDLER)
                 }
             }
+
             else -> return null
         }
     }

@@ -1,0 +1,11 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME} #end
+#parse("File Header.java")
+
+import com.trendyol.kediatr.AsyncCommandWithResultHandler
+
+class ${CLASS} : AsyncCommandWithResultHandler<${MESSAGE}, ${RETURN}> {
+
+    override suspend fun handleAsync(command: ${MESSAGE}): ${RETURN} {
+        TODO("Not yet implemented")
+    }
+}

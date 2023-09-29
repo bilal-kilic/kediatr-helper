@@ -62,3 +62,7 @@
 ## [1.10.2]
 ### Added
 - Added compatibility for `2023.1`
+- 
+## [1.11.0]
+### Added
+- Added support for CommandWithResult, CommandWithResultHandler and AsyncCommandWithResultHandler 
