@@ -50,19 +50,19 @@
 ## [1.0.6]
 ### Added
 - Added compatibility for `2021.2 EAP`
-- 
+
 ## [1.0.7]
 ### Added
 - Added compatibility for `2021.3 EAP`
--
+
 ## [1.10.1]
 ### Added
 - Added compatibility for `2022.3.2`
--
+
 ## [1.10.2]
 ### Added
 - Added compatibility for `2023.1`
-- 
+
 ## [1.11.0]
 ### Added
 - Added support for CommandWithResult, CommandWithResultHandler and AsyncCommandWithResultHandler 

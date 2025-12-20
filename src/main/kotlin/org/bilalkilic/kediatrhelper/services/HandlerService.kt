@@ -23,6 +23,7 @@ class HandlerService {
     private lateinit var cachedCommandClasses: CachedValue<Collection<PsiClass>>
 
     fun getCachedHandlerClasses(): Collection<PsiClass> = cachedHandlerClasses.value
+
     fun getCachedCommandTypes(): Collection<PsiClass> = cachedCommandClasses.value
 
     fun findHandler(element: PsiElement, superQualifiedNames: Collection<String>, classNames: List<String>): List<PsiClass> {
