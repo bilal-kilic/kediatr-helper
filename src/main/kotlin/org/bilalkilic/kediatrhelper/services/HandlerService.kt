@@ -26,23 +26,30 @@ class HandlerService {
 
     fun getCachedCommandTypes(): Collection<PsiClass> = cachedCommandClasses.value
 
-    fun findHandler(element: PsiElement, superQualifiedNames: Collection<String>, classNames: List<String>): List<PsiClass> {
+    fun findHandler(
+        element: PsiElement,
+        superQualifiedNames: Collection<String>,
+        classNames: List<String>,
+    ): List<PsiClass> {
         val scope = GlobalSearchScope.projectScope(element.project)
         val handlerTypes = getHandlerTypes(superQualifiedNames)
 
         return handlerTypes.map { type ->
             ClassInheritorsSearch.search(type, scope, true).filter {
                 it.superTypes.any { st ->
-                    if (st is PsiClassReferenceType) st.parameters.any { p ->
-                        (p is PsiClassReferenceType) && classNames.contains(p.name)
-                    } else false
+                    if (st is PsiClassReferenceType) {
+                        st.parameters.any { p ->
+                            (p is PsiClassReferenceType) && classNames.contains(p.name)
+                        }
+                    } else {
+                        false
+                    }
                 }
             }
         }.flatten()
     }
 
-    fun hasKediatrCommand(superClassQualifiedNames: Collection<String>) =
-        getHandlerTypes(superClassQualifiedNames).isNotEmpty()
+    fun hasKediatrCommand(superClassQualifiedNames: Collection<String>) = getHandlerTypes(superClassQualifiedNames).isNotEmpty()
 
     private fun getHandlerTypes(superClassQualifiedNames: Collection<String>): Collection<PsiClass> =
         superClassQualifiedNames.flatMap { qualifiedName ->
@@ -50,29 +57,34 @@ class HandlerService {
             getCachedHandlerClasses().filter { className -> handler?.contains(className.qualifiedName) ?: false }
         }
 
-    fun buildCaches(project: Project, treeChangeTracker: TreeChangeTracker) {
+    fun buildCaches(
+        project: Project,
+        treeChangeTracker: TreeChangeTracker,
+    ) {
         val manager = CachedValuesManager.getManager(project)
         val dependencies = arrayOf<Any>(PsiModificationTracker.MODIFICATION_COUNT, treeChangeTracker)
 
-        cachedHandlerClasses = manager.createCachedValue(
-            {
-                CachedValueProvider.Result.create(getHandlerTypes(project), dependencies)
-            },
-            false
-        )
-        cachedCommandClasses = manager.createCachedValue(
-            {
-                CachedValueProvider.Result.create(getCommandTypes(project), dependencies)
-            },
-            false
-        )
+        cachedHandlerClasses =
+            manager.createCachedValue(
+                {
+                    CachedValueProvider.Result.create(getHandlerTypes(project), dependencies)
+                },
+                false,
+            )
+        cachedCommandClasses =
+            manager.createCachedValue(
+                {
+                    CachedValueProvider.Result.create(getCommandTypes(project), dependencies)
+                },
+                false,
+            )
     }
 
     private fun getHandlerTypes(project: Project): List<PsiClass> {
         val scope = GlobalSearchScope.allScope(project)
         return AllClassesSearch.search(scope, project) { KediatrConstants.KediatrHandlerNames.contains(it) }
             .findAll()
-            .filter { it.qualifiedName?.startsWith(KediatrConstants.KediatrPackageName) ?: false }
+            .filter { it.qualifiedName?.startsWith(KediatrConstants.KEDIATR_PACKAGE_NAME) ?: false }
             .toList()
     }
 
@@ -80,7 +92,7 @@ class HandlerService {
         val scope = GlobalSearchScope.allScope(project)
         return AllClassesSearch.search(scope, project) { KediatrConstants.KediatrCommandNames.contains(it) }
             .findAll()
-            .filter { it.qualifiedName?.startsWith(KediatrConstants.KediatrPackageName) ?: false }
+            .filter { it.qualifiedName?.startsWith(KediatrConstants.KEDIATR_PACKAGE_NAME) ?: false }
             .toList()
     }
 

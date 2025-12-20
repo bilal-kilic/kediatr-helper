@@ -12,7 +12,8 @@ data class PopupItem(
 
 enum class HandlerType {
     BASIC,
-    ASYNC;
+    ASYNC,
+    ;
 
     fun isAsync(): Boolean = this == ASYNC
 }
@@ -27,5 +28,6 @@ fun figureOutHandlerType(handlerName: String?): HandlerType {
 
 enum class ItemScope {
     NAVIGATE,
-    CREATE;
+    CREATE,
+    ;
 }

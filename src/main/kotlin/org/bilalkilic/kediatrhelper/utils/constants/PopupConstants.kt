@@ -7,6 +7,6 @@ object PopupConstants {
     const val POPUP_STEP_HANDLER_BASIC = "Create New Handler... "
     const val POPUP_STEP_HANDLER_ASYNC = "Create New Async Handler... "
     const val POPUP_WIDTH_MULTIPLIER = 10
-    const val XAxisPadding = 30
-    const val YAxisPadding = 20
+    const val X_AXIS_PADDING = 30
+    const val Y_AXIS_PADDING = 20
 }
