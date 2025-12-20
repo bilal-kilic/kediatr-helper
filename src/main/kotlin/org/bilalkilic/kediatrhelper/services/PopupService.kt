@@ -41,14 +41,14 @@ class PopupService {
                     else Icons.createNewHandlerGutter
                 }
 
-                    override fun onChosen(
-                        selectedValue: PopupItem,
-                        finalChoice: Boolean,
-                    ): PopupStep<*>? {
-                        onChosenFunction.invoke(selectedValue)
-                        return PopupStep.FINAL_CHOICE
-                    }
+                override fun onChosen(
+                    selectedValue: PopupItem,
+                    finalChoice: Boolean,
+                ): PopupStep<*>? {
+                    onChosenFunction.invoke(selectedValue)
+                    return PopupStep.FINAL_CHOICE
                 }
+            }
             val popup = JBPopupFactory.getInstance().createListPopup(steps)
             popup.setRequestFocus(true)
             popup.setMinimumSize(Dimension(title.length * POPUP_WIDTH_MULTIPLIER, 0))

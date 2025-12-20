@@ -9,7 +9,7 @@ plugins {
     // Kotlin support
     id("org.jetbrains.kotlin.jvm") version "2.1.0"
     // gradle-intellij-plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
-    id("org.jetbrains.intellij") version "1.17.2"
+    id("org.jetbrains.intellij.platform") version "2.2.1"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
     id("org.jetbrains.changelog") version "2.2.0"
     // detekt linter - read more: https://detekt.github.io/detekt/gradle.html
@@ -39,38 +39,48 @@ val platformDownloadSources: String by project
 group = pluginGroup
 version = pluginVersion
 
-// Configure Java toolchain
+// Configure Java toolchain - IntelliJ 2024.2+ requires JVM 21
 kotlin {
-    jvmToolchain(11)
+    jvmToolchain(21)
 }
 
 // Configure project's dependencies
 repositories {
     mavenCentral()
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
+
 dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.4")
     implementation("com.trendyol:kediatr-core:1.0.15")
+
+    intellijPlatform {
+        intellijIdeaCommunity(platformVersion)
+
+        // Plugin Dependencies
+        bundledPlugins(platformPlugins.split(',').map(String::trim).filter(String::isNotEmpty))
+
+        pluginVerifier()
+    }
 }
 
-// Configure gradle-intellij-plugin plugin.
-// Read more: https://github.com/JetBrains/gradle-intellij-plugin
-intellij {
-    pluginName.set(pluginName_)
-    version.set(platformVersion)
-    type.set(platformType)
-    downloadSources.set(platformDownloadSources.toBoolean())
-    updateSinceUntilBuild.set(true)
+intellijPlatform {
+    pluginConfiguration {
+        name = pluginName_
+        version = pluginVersion
 
-    // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
-    plugins.set(platformPlugins.split(',').map(String::trim).filter(String::isNotEmpty))
-}
+        ideaVersion {
+            sinceBuild = pluginSinceBuild
+            untilBuild = pluginUntilBuild
+        }
+    }
 
-// Suppress Kotlin compiler warnings for deprecated APIs
-tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions {
-        suppressWarnings = false
-        allWarningsAsErrors = false
+    pluginVerification {
+        ides {
+            recommended()
+        }
     }
 }
 
@@ -82,21 +92,19 @@ detekt {
 }
 
 tasks {
-    // Set the compatibility versions to 11
+    // Set the compatibility versions to 21 for IntelliJ 2024.2+
     withType<JavaCompile> {
-        sourceCompatibility = "11"
-        targetCompatibility = "11"
+        sourceCompatibility = "21"
+        targetCompatibility = "21"
     }
     withType<KotlinCompile> {
         compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
-            // Allow deprecated API usage for K1 compatibility
-            allWarningsAsErrors.set(false)
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
         }
     }
 
     withType<Detekt> {
-        jvmTarget = "11"
+        jvmTarget = "21"
     }
 
     // Disable buildSearchableOptions task
@@ -105,10 +113,6 @@ tasks {
     }
 
     patchPluginXml {
-        version.set(pluginVersion)
-        sinceBuild.set(pluginSinceBuild)
-        untilBuild.set(pluginUntilBuild)
-
         // Extract the <!-- Plugin description --> section from README.md and provide for the plugin's manifest
         pluginDescription.set(
             File("./README.md").readText().lines().run {
@@ -131,8 +135,9 @@ tasks {
         )
     }
 
-    runPluginVerifier {
-        ideVersions.set(pluginVerifierIdeVersions.split(',').map(String::trim).filter(String::isNotEmpty))
+    runIde {
+        // Enable K2 mode for testing
+        jvmArgs("-Didea.kotlin.plugin.use.k2=true")
     }
 
     publishPlugin {

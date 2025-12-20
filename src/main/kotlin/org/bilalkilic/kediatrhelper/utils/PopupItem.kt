@@ -29,5 +29,4 @@ fun figureOutHandlerType(handlerName: String?): HandlerType {
 enum class ItemScope {
     NAVIGATE,
     CREATE,
-    ;
 }

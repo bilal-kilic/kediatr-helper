@@ -6,9 +6,9 @@ import com.intellij.openapi.project.ProjectManagerListener
 import org.bilalkilic.kediatrhelper.services.HandlerService
 
 class ProjectOpenedListener : ProjectManagerListener {
+    @Suppress("DEPRECATION", "OVERRIDE_DEPRECATION")
     override fun projectOpened(project: Project) {
         val service = project.service<HandlerService>()
         service.buildCaches(project, HandlerService.TreeChangeTracker())
-        // service.getCachedHandlerClasses()
     }
 }

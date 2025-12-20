@@ -24,12 +24,12 @@ import org.bilalkilic.kediatrhelper.utils.extensions.getClassNameFromPackage
 import org.bilalkilic.kediatrhelper.utils.extensions.getKtClass
 import org.bilalkilic.kediatrhelper.utils.extensions.getSerialSuperClassNames
 import org.bilalkilic.kediatrhelper.utils.figureOutHandlerType
-import org.jetbrains.kotlin.idea.debugger.sequence.psi.resolveType
+import org.jetbrains.kotlin.analysis.api.analyze
+import org.jetbrains.kotlin.analysis.api.symbols.KaClassSymbol
+import org.jetbrains.kotlin.analysis.api.types.symbol
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtNamedFunction
-import org.jetbrains.kotlin.types.typeUtil.supertypes
-import org.jetbrains.kotlinx.serialization.compiler.backend.common.serialName
 import java.awt.event.MouseEvent
 
 class KediatrHandlerClassMarker : LineMarkerProvider {
@@ -38,17 +38,8 @@ class KediatrHandlerClassMarker : LineMarkerProvider {
     override fun getLineMarkerInfo(element: PsiElement): LineMarkerInfo<*>? {
         return try {
             getLineMarkerInfoInternal(element)
-        } catch (e: IllegalStateException) {
-            // K2 mode is not supported yet, silently ignore
-            if (e.message?.contains("KotlinCacheService") == true ||
-                e.message?.contains("K2 mode") == true
-            ) {
-                null
-            } else {
-                throw e
-            }
         } catch (e: Exception) {
-            // Log other exceptions but don't crash
+            // Log exceptions but don't crash
             null
         }
     }
@@ -71,27 +62,13 @@ class KediatrHandlerClassMarker : LineMarkerProvider {
 
                     superClassSerialNames to commandTypeClassNames
                 }
+
                 element is KtCallExpression -> {
-                    // get first parameter because commandBus only has one argument
-                    val handlerParameter =
-                        element.valueArguments
-                            .firstOrNull()
-                            ?.getArgumentExpression()
-                            ?.resolveType() ?: return null
-
-                    val superClassSerialNames =
-                        handlerParameter
-                            .supertypes()
-                            .map { it.serialName() }
-
-                    // Get super type names with class' own name
-                    val commandTypeClassNames =
-                        superClassSerialNames
-                            .plus(handlerParameter.serialName())
-                            .map { it.getClassNameFromPackage() }
-
-                    superClassSerialNames to commandTypeClassNames
+                    // With K2 Analysis API take the tip info from KtCallExpression
+                    val superTypeInfo = getCallExpressionSuperTypes(element) ?: return null
+                    superTypeInfo
                 }
+
                 else -> return null
             }
 
@@ -108,6 +85,31 @@ class KediatrHandlerClassMarker : LineMarkerProvider {
             GutterIconRenderer.Alignment.CENTER,
             { lineMarkerInfoInfoName },
         )
+    }
+
+    private fun getCallExpressionSuperTypes(element: KtCallExpression): Pair<List<String>, List<String>>? {
+        val argumentExpression = element.valueArguments.firstOrNull()?.getArgumentExpression()
+            ?: return null
+
+        return analyze(argumentExpression) {
+            val ktType = argumentExpression.expressionType ?: return@analyze null
+
+            val superClassSerialNames = ktType.allSupertypes.mapNotNull { superType ->
+                val classSymbol = superType.symbol as? KaClassSymbol
+                classSymbol?.classId?.asSingleFqName()?.asString()
+            }.toList()
+
+            val ownClassSymbol = ktType.symbol as? KaClassSymbol
+            val ownTypeName = ownClassSymbol?.classId?.asSingleFqName()?.asString()
+
+            // Get super type names with class' own name
+            val commandTypeClassNames = superClassSerialNames
+                .plus(ownTypeName)
+                .filterNotNull()
+                .map { it.getClassNameFromPackage() }
+
+            superClassSerialNames to commandTypeClassNames
+        }
     }
 
     private fun navigationHandler(
