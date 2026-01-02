@@ -98,6 +98,7 @@ class HandlerService {
 
     class TreeChangeTracker : ModificationTracker {
         private val myCount: Long = 0
+
         override fun getModificationCount(): Long {
             return myCount
         }

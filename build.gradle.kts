@@ -1,6 +1,4 @@
 import io.gitlab.arturbosch.detekt.Detekt
-//import org.jetbrains.changelog.Changelog
-//import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -10,8 +8,6 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "2.1.0"
     // gradle-intellij-plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
     id("org.jetbrains.intellij.platform") version "2.2.1"
-    // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
-    // id("org.jetbrains.changelog") version "2.2.0"
     // detekt linter - read more: https://detekt.github.io/detekt/gradle.html
     id("io.gitlab.arturbosch.detekt") version "1.23.4"
     // ktlint linter - read more: https://github.com/JLLeitschuh/ktlint-gradle
@@ -123,16 +119,8 @@ tasks {
                     throw GradleException("Plugin description section not found in README.md:\n$start ... $end")
                 }
                 subList(indexOf(start) + 1, indexOf(end))
-            }.joinToString("\n").run { markdownToHTML(this) },
+            }.joinToString("\n"),
         )
-
-        // Get the latest available change notes from the changelog file
-        //changeNotes.set(
-        //    changelog.renderItem(
-        //        changelog.getLatest(),
-        //       org.jetbrains.changelog.Changelog.OutputType.HTML,
-        //    ),
-        //)
     }
 
     runIde {
@@ -141,7 +129,6 @@ tasks {
     }
 
     publishPlugin {
-        //dependsOn("patchChangelog")
         token.set(System.getenv("PUBLISH_TOKEN"))
         // pluginVersion is based on the SemVer (https://semver.org) and supports pre-release labels, like 2.1.7-alpha.3
         // Specify pre-release label to publish the plugin in a custom Release Channel automatically. Read more:
@@ -149,14 +136,3 @@ tasks {
         channels.set(listOf(pluginVersion.split('-').getOrElse(1) { "default" }.split('.').first()))
     }
 }
-
-// Configure gradle-changelog-plugin plugin.
-// Read more: https://github.com/JetBrains/gradle-changelog-plugin
-//changelog {
-//    version.set(pluginVersion)
-//    path.set("${project.projectDir}/CHANGELOG.md")
-//    header.set(provider { "[${version.get()}]" })
-//    itemPrefix.set("-")
-//    keepUnreleasedSection.set(true)
-//    groups.set(listOf("Added", "Changed", "Deprecated", "Removed", "Fixed", "Security"))
-//}

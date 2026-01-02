@@ -88,25 +88,28 @@ class KediatrHandlerClassMarker : LineMarkerProvider {
     }
 
     private fun getCallExpressionSuperTypes(element: KtCallExpression): Pair<List<String>, List<String>>? {
-        val argumentExpression = element.valueArguments.firstOrNull()?.getArgumentExpression()
-            ?: return null
+        val argumentExpression =
+            element.valueArguments.firstOrNull()?.getArgumentExpression()
+                ?: return null
 
         return analyze(argumentExpression) {
             val ktType = argumentExpression.expressionType ?: return@analyze null
 
-            val superClassSerialNames = ktType.allSupertypes.mapNotNull { superType ->
-                val classSymbol = superType.symbol as? KaClassSymbol
-                classSymbol?.classId?.asSingleFqName()?.asString()
-            }.toList()
+            val superClassSerialNames =
+                ktType.allSupertypes.mapNotNull { superType ->
+                    val classSymbol = superType.symbol as? KaClassSymbol
+                    classSymbol?.classId?.asSingleFqName()?.asString()
+                }.toList()
 
             val ownClassSymbol = ktType.symbol as? KaClassSymbol
             val ownTypeName = ownClassSymbol?.classId?.asSingleFqName()?.asString()
 
             // Get super type names with class' own name
-            val commandTypeClassNames = superClassSerialNames
-                .plus(ownTypeName)
-                .filterNotNull()
-                .map { it.getClassNameFromPackage() }
+            val commandTypeClassNames =
+                superClassSerialNames
+                    .plus(ownTypeName)
+                    .filterNotNull()
+                    .map { it.getClassNameFromPackage() }
 
             superClassSerialNames to commandTypeClassNames
         }

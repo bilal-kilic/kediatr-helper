@@ -31,24 +31,28 @@ import javax.swing.Icon
 class PopupService {
     fun show(popupModel: KediatrPopupModel) {
         with(popupModel) {
-            val steps = object : BaseListPopupStep<PopupItem>(title, items.toList(), icon) {
-                override fun getTextFor(value: PopupItem): String {
-                    return value.message
-                }
+            val steps =
+                object : BaseListPopupStep<PopupItem>(title, items.toList(), icon) {
+                    override fun getTextFor(value: PopupItem): String {
+                        return value.message
+                    }
 
-                override fun getIconFor(value: PopupItem): Icon {
-                    return if (value.scope == ItemScope.NAVIGATE) Icons.navigateToHandlerGutter
-                    else Icons.createNewHandlerGutter
-                }
+                    override fun getIconFor(value: PopupItem): Icon {
+                        return if (value.scope == ItemScope.NAVIGATE) {
+                            Icons.navigateToHandlerGutter
+                        } else {
+                            Icons.createNewHandlerGutter
+                        }
+                    }
 
-                override fun onChosen(
-                    selectedValue: PopupItem,
-                    finalChoice: Boolean,
-                ): PopupStep<*>? {
-                    onChosenFunction.invoke(selectedValue)
-                    return PopupStep.FINAL_CHOICE
+                    override fun onChosen(
+                        selectedValue: PopupItem,
+                        finalChoice: Boolean,
+                    ): PopupStep<*>? {
+                        onChosenFunction.invoke(selectedValue)
+                        return PopupStep.FINAL_CHOICE
+                    }
                 }
-            }
             val popup = JBPopupFactory.getInstance().createListPopup(steps)
             popup.setRequestFocus(true)
             popup.setMinimumSize(Dimension(title.length * POPUP_WIDTH_MULTIPLIER, 0))
@@ -67,9 +71,10 @@ class PopupService {
         val mainClass = popupItem.referenceClass
         val directory = mainClass.containingFile.containingDirectory
 
-        val kediatrSuperType = mainClass.superTypeListEntries.first {
-            it.text.containsAny(KediatrConstants.KediatrCommandNames)
-        }.text ?: return
+        val kediatrSuperType =
+            mainClass.superTypeListEntries.first {
+                it.text.containsAny(KediatrConstants.KediatrCommandNames)
+            }.text ?: return
 
         val templateManager = FileTemplateManager.getInstance(mainClass.project)
         val props = templateManager.defaultProperties
