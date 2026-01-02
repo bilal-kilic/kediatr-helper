@@ -50,19 +50,31 @@
 ## [1.0.6]
 ### Added
 - Added compatibility for `2021.2 EAP`
-- 
+
 ## [1.0.7]
 ### Added
 - Added compatibility for `2021.3 EAP`
--
+
 ## [1.10.1]
 ### Added
 - Added compatibility for `2022.3.2`
--
+
 ## [1.10.2]
 ### Added
 - Added compatibility for `2023.1`
-- 
+
 ## [1.11.0]
 ### Added
-- Added support for CommandWithResult, CommandWithResultHandler and AsyncCommandWithResultHandler 
+- Added support for CommandWithResult, CommandWithResultHandler and AsyncCommandWithResultHandler
+
+## [2.0.0]
+### Changed
+- **BREAKING**: Migrated from K1 to K2 Analysis API
+- **BREAKING**: Minimum IDE version is now 2024.2 (K2 mode required)
+- Updated to use Kotlin 2.1.0 and JVM 17
+- Plugin now exclusively uses K2 mode for Kotlin analysis
+- Modernized Gradle build configuration with IntelliJ Platform Gradle Plugin 2.x
+
+### Removed
+- Dropped support for IDE versions before 2024.2
+- Removed K1 compatibility code and fallbacks

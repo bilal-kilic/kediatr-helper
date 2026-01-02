@@ -10,7 +10,6 @@ import org.bilalkilic.kediatrhelper.utils.extensions.getSerialSuperClassNames
 import org.jetbrains.kotlin.psi.KtClass
 
 class FindHandler : AnAction() {
-
     override fun actionPerformed(e: AnActionEvent) {
         val element = e.dataContext.getData(LangDataKeys.PSI_ELEMENT)
         if (element !is KtClass) {

@@ -1,6 +1,7 @@
 .gradle
 .idea
 build
+.intellijPlatform
 
 # Local outputs
 .DS_Store

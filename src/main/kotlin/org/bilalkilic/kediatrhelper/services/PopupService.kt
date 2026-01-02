@@ -13,10 +13,15 @@ import org.bilalkilic.kediatrhelper.utils.PopupItem
 import org.bilalkilic.kediatrhelper.utils.constants.Icons
 import org.bilalkilic.kediatrhelper.utils.constants.KediatrConstants
 import org.bilalkilic.kediatrhelper.utils.constants.PopupConstants.POPUP_WIDTH_MULTIPLIER
-import org.bilalkilic.kediatrhelper.utils.constants.PopupConstants.XAxisPadding
-import org.bilalkilic.kediatrhelper.utils.constants.PopupConstants.YAxisPadding
+import org.bilalkilic.kediatrhelper.utils.constants.PopupConstants.X_AXIS_PADDING
+import org.bilalkilic.kediatrhelper.utils.constants.PopupConstants.Y_AXIS_PADDING
 import org.bilalkilic.kediatrhelper.utils.constants.TemplateFileConstants
-import org.bilalkilic.kediatrhelper.utils.extensions.*
+import org.bilalkilic.kediatrhelper.utils.extensions.containsAny
+import org.bilalkilic.kediatrhelper.utils.extensions.getReturnType
+import org.bilalkilic.kediatrhelper.utils.extensions.isCommand
+import org.bilalkilic.kediatrhelper.utils.extensions.isCommandWithResult
+import org.bilalkilic.kediatrhelper.utils.extensions.isNotification
+import org.bilalkilic.kediatrhelper.utils.extensions.isQuery
 import org.jetbrains.kotlin.psi.KtFile
 import java.awt.Dimension
 import java.awt.Point
@@ -36,7 +41,10 @@ class PopupService {
                     else Icons.createNewHandlerGutter
                 }
 
-                override fun onChosen(selectedValue: PopupItem, finalChoice: Boolean): PopupStep<*>? {
+                override fun onChosen(
+                    selectedValue: PopupItem,
+                    finalChoice: Boolean,
+                ): PopupStep<*>? {
                     onChosenFunction.invoke(selectedValue)
                     return PopupStep.FINAL_CHOICE
                 }
@@ -44,7 +52,7 @@ class PopupService {
             val popup = JBPopupFactory.getInstance().createListPopup(steps)
             popup.setRequestFocus(true)
             popup.setMinimumSize(Dimension(title.length * POPUP_WIDTH_MULTIPLIER, 0))
-            popup.show(RelativePoint(Point(mouseEvent.xOnScreen + XAxisPadding, mouseEvent.yOnScreen + YAxisPadding)))
+            popup.show(RelativePoint(Point(mouseEvent.xOnScreen + X_AXIS_PADDING, mouseEvent.yOnScreen + Y_AXIS_PADDING)))
         }
     }
 
@@ -79,18 +87,21 @@ class PopupService {
         newHandlerClass.navigate(true)
     }
 
-    private fun getTemplateNameAndSuffix(kediatrSuperType: String, selectedValue: PopupItem): Pair<String, String>? {
+    private fun getTemplateNameAndSuffix(
+        kediatrSuperType: String,
+        selectedValue: PopupItem,
+    ): Pair<String, String>? {
         return when {
             kediatrSuperType.isCommandWithResult() -> {
                 if (selectedValue.type.isAsync()) {
                     Pair(
                         TemplateFileConstants.TEMPLATE_FILE_HANDLER_COMMAND_WITH_RESULT_ASYNC,
-                        TemplateFileConstants.SUFFIX_HANDLER_ASYNC
+                        TemplateFileConstants.SUFFIX_HANDLER_ASYNC,
                     )
                 } else {
                     Pair(
                         TemplateFileConstants.TEMPLATE_FILE_HANDLER_COMMAND_WITH_RESULT,
-                        TemplateFileConstants.SUFFIX_HANDLER
+                        TemplateFileConstants.SUFFIX_HANDLER,
                     )
                 }
             }
@@ -99,7 +110,7 @@ class PopupService {
                 if (selectedValue.type.isAsync()) {
                     Pair(
                         TemplateFileConstants.TEMPLATE_FILE_HANDLER_COMMAND_ASYNC,
-                        TemplateFileConstants.SUFFIX_HANDLER_ASYNC
+                        TemplateFileConstants.SUFFIX_HANDLER_ASYNC,
                     )
                 } else {
                     Pair(TemplateFileConstants.TEMPLATE_FILE_HANDLER_COMMAND, TemplateFileConstants.SUFFIX_HANDLER)
@@ -110,7 +121,7 @@ class PopupService {
                 if (selectedValue.type.isAsync()) {
                     Pair(
                         TemplateFileConstants.TEMPLATE_FILE_HANDLER_QUERY_ASYNC,
-                        TemplateFileConstants.SUFFIX_HANDLER_ASYNC
+                        TemplateFileConstants.SUFFIX_HANDLER_ASYNC,
                     )
                 } else {
                     Pair(TemplateFileConstants.TEMPLATE_FILE_HANDLER_QUERY, TemplateFileConstants.SUFFIX_HANDLER)
@@ -121,7 +132,7 @@ class PopupService {
                 if (selectedValue.type.isAsync()) {
                     Pair(
                         TemplateFileConstants.TEMPLATE_FILE_HANDLER_NOTIFICATION_ASYNC,
-                        TemplateFileConstants.SUFFIX_HANDLER_ASYNC
+                        TemplateFileConstants.SUFFIX_HANDLER_ASYNC,
                     )
                 } else {
                     Pair(TemplateFileConstants.TEMPLATE_FILE_HANDLER_NOTIFICATION, TemplateFileConstants.SUFFIX_HANDLER)
